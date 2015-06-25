@@ -1,0 +1,3 @@
+#!/bin/sh
+
+cat $@ | bin/strip.sh | ruby bin/generate.rb
