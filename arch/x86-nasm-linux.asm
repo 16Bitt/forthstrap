@@ -14,12 +14,16 @@ forth_start:
 	jmp next
 
 PROGRAM:
-	dd loopy_CFA
+	dd lit_CFA
+	dd swap_start + 4
+	dd strlen_CFA
 	dd forth_exit
 
 forth_exit:
 	dd forth_exit_BEGIN
 forth_exit_BEGIN:
+	pop eax
+forth_HALT:
 	push dword 0
 	call exit
 
@@ -33,10 +37,7 @@ forth_exit_BEGIN:
 	mov esi, dword [ebp]
 %endmacro
 
-%macro STRING 1
-	db %0, 0
-%endmacro
-
+%define STRING db
 %define SAVE_WS dd
 
 next:
@@ -99,6 +100,7 @@ jp_CFA:
 jp_BEGIN:
 	lodsd
 	mov esi, eax
+	add esi, 4
 	jmp next
 
 ;jz ( flag --)
@@ -108,10 +110,10 @@ jz_start:
 jz_CFA:
 	dd jz_BEGIN
 jz_BEGIN:
-	pop eax
-	or eax, eax
-	jnz next
+	pop ebx
 	lodsd
+	or ebx, ebx
+	jnz next
 	mov esi, eax
 	jmp next
 
@@ -122,10 +124,10 @@ jnz_start:
 jnz_CFA:
 	dd jnz_BEGIN
 jnz_BEGIN:
-	pop eax
-	or eax, eax
-	jz next
+	pop ebx
 	lodsd
+	or ebx, ebx
+	jz next
 	mov esi, eax
 	jmp next
 
@@ -215,9 +217,53 @@ emit_BEGIN:
 	popad
 	jmp next
 
+and_start:
+	dd emit_start
+	db "and", 0
+and_CFA:
+	dd and_BEGIN
+and_BEGIN:
+	pop eax
+	pop ebx
+	and eax, ebx
+	push eax
+	jmp next
+
+GT_start:
+	dd and_start
+	db ">", 0
+GT_CFA:
+	dd GT_BEGIN
+GT_BEGIN:
+	pop ebx
+	pop eax
+	cmp eax, ebx
+	jg is_true
+	jmp is_false
+
+LT_start:
+	dd GT_start
+	db "<", 0
+LT_CFA:
+	dd LT_BEGIN
+LT_BEGIN:
+	pop ebx
+	pop eax
+	cmp eax, ebx
+	jl is_true
+	jmp is_false
+
+is_true:
+	push dword 1
+	jmp next
+
+is_false:
+	push dword 0
+	jmp next
+
 ;ws ( -- word-size)
 ws_start:
-	dd emit_start
+	dd LT_start
 	db "ws", 0
 ws_CFA:
 	dd ws_BEGIN
@@ -230,6 +276,7 @@ section .data
 
 emit_buffer: db 0, 0
 emit_zero: dd 0
+hello_str: db "hello, world", 0
 
 %include "arch/forth.asm"
 

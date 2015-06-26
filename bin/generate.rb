@@ -15,7 +15,7 @@ label = 0
 
 def number? n
 	for i in 0...n.length
-		if (n[i] < '0') or (n[i] > '9')
+		if (n[i].chr < '0') or (n[i].chr > '9')
 			return nil
 		end
 	end
@@ -45,6 +45,8 @@ def convert_to_CFA astr
 	str.gsub! "0", "ZERO"
 	str.gsub! "1", "ONE"
 	str.gsub! "2", "TWO"
+	str.gsub! "<", "LT"
+	str.gsub! ">", "GT"
 
 	return str + "_CFA"
 end
@@ -71,6 +73,8 @@ def convert_to_lbl astr
 	str.gsub! "0", "ZERO"
 	str.gsub! "1", "ONE"
 	str.gsub! "2", "TWO"
+	str.gsub! "<", "LT"
+	str.gsub! ">", "GT"
 	return str + "_start"
 end
 
@@ -96,6 +100,8 @@ def convert_to_anon astr
 	str.gsub! "0", "ZERO"
 	str.gsub! "1", "ONE"
 	str.gsub! "2", "TWO"
+	str.gsub! "<", "LT"
+	str.gsub! ">", "GT"
 	return str + "_anon"
 end
 
@@ -107,7 +113,7 @@ while index < stream.length
 				puts "#{convert_to_lbl stream[index]}:"
 				puts "\tSAVE_WS #{last}"
 				last = convert_to_lbl stream[index]
-				puts "\tSTRING \"#{stream[index]}\""
+				puts "\tSTRING \"#{stream[index]}\", 0"
 				puts "#{convert_to_CFA stream[index]}:"
 				puts "\tSAVE_WS #{convert_to_CFA 'enter'}"
 			when "%C:"
@@ -115,7 +121,7 @@ while index < stream.length
 				puts "#{convert_to_lbl stream[index]}:"
 				puts "\tSAVE_WS #{clast}"
 				clast = convert_to_lbl stream[index]
-				puts "\tSTRING \"#{stream[index]}\""
+				puts "\tSTRING \"#{stream[index]}\", 0"
 				puts "#{convert_to_CFA stream[index]}:"
 				puts "\tSAVE_WS #{convert_to_CFA 'enter'}"
 			when "%;"
@@ -144,7 +150,7 @@ while index < stream.length
 				puts "#{convert_to_lbl stream[index]}:"
 				puts "\tSAVE_WS #{last}"
 				last = convert_to_lbl stream[index]
-				puts "\tSTRING \"#{stream[index]}\""
+				puts "\tSTRING \"#{stream[index]}\", 0"
 				puts "#{convert_to_CFA stream[index]}:"
 				puts "\tSAVE_WS #{convert_to_CFA 'enter'}"
 				puts "\tSAVE_WS #{convert_to_CFA 'lit'}"
@@ -175,11 +181,12 @@ while index < stream.length
 				puts "\tSAVE_WS #{convert_to_CFA 'jnz'}"
 				lbl = labels["#{stream[index]}"]
 				if not lbl
+					puts labels
 					abort "Unknown label-- #{stream[index]}"
 				end
 				puts "\tSAVE_WS #{lbl}"
 			else	
-				if stream[index][0] == '~'
+				if stream[index][0].chr == '~'
 					labels["#{stream[index][1..-1]}"] = convert_to_anon stream[index][1..-1]
 					puts "#{convert_to_anon stream[index][1..-1]}:"
 				elsif number? stream[index]
@@ -199,7 +206,7 @@ end
 
 puts "#{convert_to_lbl 'last'}:"
 puts "\tSAVE_WS #{last}"
-puts "\tSTRING \"last\""
+puts "\tSTRING \"last\", 0"
 puts "#{convert_to_CFA 'last'}:"
 puts "\tSAVE_WS #{convert_to_CFA 'enter'}"
 puts "\tSAVE_WS #{convert_to_CFA 'lit'}"
@@ -212,7 +219,7 @@ label += 1
 
 puts "#{convert_to_lbl 'clast'}:"
 puts "\tSAVE_WS #{clast}"
-puts "\tSTRING \"clast\""
+puts "\tSTRING \"clast\", 0"
 puts "#{convert_to_CFA 'clast'}:"
 puts "\tSAVE_WS #{convert_to_CFA 'enter'}"
 puts "\tSAVE_WS #{convert_to_CFA 'lit'}"

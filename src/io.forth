@@ -5,13 +5,11 @@
 \ Dot vocabulary
 \ ---------------
 
+%: tohex
+	
+%;
+
 %: . 
-	ws
-	~dot-loop
-		swap emit
-		dup
-	%goto-nz dot-loop
-	drop
 %;
 
 %: .s 

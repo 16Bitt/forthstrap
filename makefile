@@ -9,5 +9,8 @@ nasm: bootstrap
 	nasm -f elf -g arch/x86-nasm-linux.asm
 	gcc -m32 arch/x86-nasm-linux.o -o x86
 
+run: all
+	gdb x86
+
 clean:
 	-rm arch/*.o x86 arch/forth.asm

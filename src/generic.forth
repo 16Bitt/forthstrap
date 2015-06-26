@@ -28,8 +28,8 @@
 %: dup reg0 ! reg0 @ reg0 @ %;
 %: swap reg1 ! reg0 ! reg1 @ reg0 @ %;
 %: drop reg0 ! %;
-%: dup2 reg0 ! reg1 ! reg1 @ reg0 @ reg1 @ reg0 @ %;
-%: over2 reg0 ! reg1 ! reg2 ! reg2 @ reg1 @ reg0 @ reg2 @ %;
+%: 2dup reg0 ! reg1 ! reg1 @ reg0 @ reg1 @ reg0 @ %;
+%: 2over reg0 ! reg1 ! reg2 ! reg2 @ reg1 @ reg0 @ reg2 @ %;
 
 \ Common words
 %: 1+! dup @ 1 + swap ! %;
@@ -42,6 +42,9 @@
 %: true 1 %;
 %: false 0 %;
 %: not %if false %else true %then %;
+%: = - not %;
+
+\
 \ -----------------------
 \ HERE related vocabulary
 \ -----------------------
@@ -60,18 +63,22 @@
 \ This is where things get a bit messy-- gotos and variables abound
 %variable str-length
 %: strlen str-length 0!
+	1 -
 	~strlen-loop
-		dup c@ %if str-length 1+! 1 + %goto strlen-loop %then
+		1 +
+		dup c@ %if str-length 1+! %then
+		dup c@
+	%goto-nz strlen-loop
 	drop
 	str-length @
 %;
 
 %variable strcmp-count
-%: strcmp dup2 strlen swap strlen
+%: strcmp 2dup strlen swap strlen
 	- %if drop drop false exit %then
 	dup strlen strcmp-count !
 	~strcmp-loop
-		dup2
+		2dup
 		@ @ - %if drop drop false exit %then
 		1 + swap 1 +
 		strcmp-count 1-!
@@ -81,6 +88,14 @@
 	true
 %;
 
+%: strmov
+	dup
+	~strmov-loop
+		c@ dup c,
+		swap 1 + swap
+	%goto-nz strmov-loop
+	drop 0 c,
+%;
 
 \ -----------------------
 \ Compiler vocabulary
@@ -95,7 +110,7 @@
 	last @
 	~find-loop
 		dup ws +
-		over2 strcmp %if swap drop exit %then
+		2over strcmp %if swap drop exit %then
 		@ dup
 	%goto-nz find-loop
 	false
@@ -106,20 +121,51 @@
 	clast @
 	~cfind-loop
 		dup ws +
-		over2 strcmp %if swap drop exit %then
+		2over strcmp %if swap drop exit %then
 		@ dup
 	%goto-nz cfind-loop
 	false
 %;
-\ %: create here @ last @ , last ! word strmov %;
-\ %: variable create %lit lit , here @ 0 , %lit exit , here @ ! here ws+! %;
-\ %: : create [ %lit enter , %;
-\ %: ;  %lit exit , ] %;
+
+%variable buffer
+%variable buffer-length
+%variable position
+
+\ Clear the buffer and replace spaces and newlines with 0
+%: prepare
+	buffer @
+	~prepare-loop
+		dup @ c@ 10 = %if dup 0 swap @ ! %then
+		dup @ c@ 32 = %if dup 0 swap @ ! %then
+		1 + dup
+		buffer @ buffer-length @ + =
+	%goto-z prepare-loop
+	drop
+	0 position !
+%;
+
+\ Get a word from the buffer
+%: word
+	~word-loop1
+		position 1+!
+		position @ c@
+	%goto-nz word-loop1
+
+	~word-loop2
+		position 1+!
+		position @ c@
+	%goto-z word-loop2
+
+	position @ buffer @ buffer-length @ + > %if false %else position @ %then 
+%;
+
+%: create here @ last @ , last ! word strmov %;
+%: variable create %lit lit , here @ 0 , %lit exit , here @ ! here ws+! %;
+%: : create [ %lit enter , %;
+%: ;  %lit exit , ] %;
 
 \ --------------------------
 \ Initialize the environment
 \ --------------------------
-
-\ Add a custom payload here
 
 %: init heap-init %;
