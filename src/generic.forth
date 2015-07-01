@@ -75,11 +75,11 @@
 
 %variable strcmp-count
 %: strcmp 2dup strlen swap strlen
-	- %if drop drop false exit %then
+	= not %if drop drop false exit %then
 	dup strlen strcmp-count !
 	~strcmp-loop
 		2dup
-		@ @ - %if drop drop false exit %then
+		c@ swap c@ = not %if drop drop false exit %then
 		1 + swap 1 +
 		strcmp-count 1-!
 		strcmp-count @
@@ -113,7 +113,7 @@
 		2over strcmp %if swap drop exit %then
 		@ dup
 	%goto-nz find-loop
-	false
+	drop drop false
 %;
 
 \ CFIND is the same as find, but searches the compile-time vocab
@@ -124,7 +124,7 @@
 		2over strcmp %if swap drop exit %then
 		@ dup
 	%goto-nz cfind-loop
-	false
+	drop drop false
 %;
 
 %variable buffer

@@ -15,8 +15,9 @@ forth_start:
 
 PROGRAM:
 	dd lit_CFA
-	dd swap_start + 4
-	dd strlen_CFA
+	dd 0xDEADBEEF
+	dd DOT_CFA
+	dd cr_CFA
 	dd forth_exit
 
 forth_exit:
@@ -100,7 +101,6 @@ jp_CFA:
 jp_BEGIN:
 	lodsd
 	mov esi, eax
-	add esi, 4
 	jmp next
 
 ;jz ( flag --)
@@ -261,9 +261,33 @@ is_false:
 	push dword 0
 	jmp next
 
+shl_start:
+	dd LT_start
+	db "shl", 0
+shl_CFA:
+	dd shl_BEGIN
+shl_BEGIN:
+	pop eax
+	pop ecx
+	shl eax, cl
+	push eax
+	jmp next
+
+shr_start:
+	dd shl_start
+	db "shr", 0
+shr_CFA:
+	dd shr_BEGIN
+shr_BEGIN:
+	pop ecx
+	pop eax
+	shr eax, cl
+	push eax
+	jmp next
+
 ;ws ( -- word-size)
 ws_start:
-	dd LT_start
+	dd shr_start
 	db "ws", 0
 ws_CFA:
 	dd ws_BEGIN
