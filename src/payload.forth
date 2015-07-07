@@ -1,9 +1,5 @@
 %variable test
-
-%: loopy
-	65 test !
-	~loopy-loop
-		test @ emit
-		test 1+!
-	%goto loopy-loop
+%: payload
+	init
+	256 shell
 %;

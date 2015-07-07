@@ -14,10 +14,7 @@ forth_start:
 	jmp next
 
 PROGRAM:
-	dd lit_CFA
-	dd 0xDEADBEEF
-	dd DOT_CFA
-	dd cr_CFA
+	dd payload_CFA
 	dd forth_exit
 
 forth_exit:
@@ -285,9 +282,38 @@ shr_BEGIN:
 	push eax
 	jmp next
 
+GTr_start:
+	dd shr_start
+	db ">r", 0
+GTr_CFA:
+	dd GTr_BEGIN
+GTr_BEGIN:
+	pop eax
+	mov dword [ebp], eax
+	add ebp, 4
+	jmp next
+
+key_start:
+	dd GTr_start
+	db "key", 0
+key_CFA:
+	dd key_BEGIN
+key_BEGIN:
+	pusha
+	mov eax, 3		;SYS_READ
+	mov ebx, 0		;stdin
+	mov ecx, emit_buffer	;Buffer to read to
+	mov edx, 1		;one byte
+	int 0x80
+	popa
+	xor eax, eax
+	mov al, byte [emit_buffer]
+	push eax
+	jmp next
+
 ;ws ( -- word-size)
 ws_start:
-	dd shr_start
+	dd GTr_start
 	db "ws", 0
 ws_CFA:
 	dd ws_BEGIN

@@ -43,8 +43,9 @@
 %: false 0 %;
 %: not %if false %else true %then %;
 %: = - not %;
+\ n lower upper -- flag
+%: within? 2over > swap 2over < and swap drop %;
 
-\
 \ -----------------------
 \ HERE related vocabulary
 \ -----------------------
@@ -54,7 +55,7 @@
 %: heap-init end-of-mem 512 + here ! %;
 %: , here @ ! here ws+! %;
 %: c, here @ c! here 1+! %;
-
+%: allot here @ + here ! %;
 
 \ ----------------------
 \ String vocabulary
@@ -133,36 +134,64 @@
 
 \ Clear the buffer and replace spaces and newlines with 0
 %: prepare
-	buffer @
+	position 0!
 	~prepare-loop
-		dup @ c@ 10 = %if dup 0 swap @ ! %then
-		dup @ c@ 32 = %if dup 0 swap @ ! %then
-		1 + dup
-		buffer @ buffer-length @ + =
-	%goto-z prepare-loop
-	drop
-	0 position !
+		position @ buffer @ + c@
+		dup 13 = %if 0 buffer @ position @ + c! %then
+		dup 10 = %if 0 buffer @ position @ + c! %then
+		    32 = %if 0 buffer @ position @ + c! %then
+		position 1+!
+		buffer @ position @ + buffer @ buffer-length @ + <
+	%goto-nz prepare-loop
+	position 0!
+%;
+
+\ Set the buffer to 0's
+%: clear
+	position @
+	position 0!
+	~clear-loop
+		0 buffer @ position @ + c!
+		position 1+!
+		position @ buffer @ + buffer @ buffer-length @ + <
+	%goto-nz clear-loop
+	position !
 %;
 
 \ Get a word from the buffer
 %: word
 	~word-loop1
 		position 1+!
-		position @ c@
+		buffer @ position @ + c@
 	%goto-nz word-loop1
 
 	~word-loop2
 		position 1+!
-		position @ c@
+		position @ buffer @ + c@
 	%goto-z word-loop2
 
-	position @ buffer @ buffer-length @ + > %if false %else position @ %then 
+	position @ buffer @ + buffer-length @ buffer @ + 
+	> %if false %else position @ buffer @ + %then 
+%;
+
+\ Check if the string at the ptr is a valid integer
+%: number?
+	position @
+	~isnumber-loop
+		position @ buffer @ + c@
+		47 58 within? not %if false swap position !  exit %then
+		position 1+!
+		position @ buffer @ + c@
+	%goto-nz isnumber-loop
+	true swap position !
 %;
 
 %: create here @ last @ , last ! word strmov %;
 %: variable create %lit lit , here @ 0 , %lit exit , here @ ! here ws+! %;
 %: : create [ %lit enter , %;
 %: ;  %lit exit , ] %;
+%: cfa ws + dup strlen + %;
+%: ` word find cfa %;
 
 \ --------------------------
 \ Initialize the environment

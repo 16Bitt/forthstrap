@@ -41,11 +41,42 @@
 
 
 \ ---------------
+\ Shell Code
+\ ---------------
+
+%: line
+	~line-loop
+		key dup emit dup
+		13 = %if drop cr exit %then
+		buffer @ position @ + c!
+		position 1+!
+		buffer @ position @ + buffer @ buffer-length @ + <
+	%goto-nz line-loop
+	cr
+%;
+
+%: shell
+	here @ buffer !
+	dup allot buffer-length !
+	~shell-loop
+		clear
+		65 buffer @ c!
+		2 position !
+		line prepare cr
+		~shell-loop-inner
+			word dup dup %if position @ . space dup .s find . space number? . cr %else drop %then
+		%goto-nz shell-loop-inner
+		cr 
+	%goto shell-loop
+%;
+
+\ ---------------
 \ Common IO words
 \ ---------------
 
 %: cr
 	10 emit
+	13 emit
 %;
 
 %: space
