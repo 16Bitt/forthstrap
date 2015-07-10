@@ -43,6 +43,7 @@
 %: false 0 %;
 %: not %if false %else true %then %;
 %: = - not %;
+%: negate 0 swap - %;
 \ n lower upper -- flag
 %: within? 2over > swap 2over < and swap drop %;
 
@@ -90,12 +91,12 @@
 %;
 
 %: strmov
-	dup
 	~strmov-loop
+		dup
 		c@ dup c,
 		swap 1 + swap
 	%goto-nz strmov-loop
-	drop 0 c,
+	drop
 %;
 
 \ -----------------------
@@ -171,12 +172,25 @@
 	%goto-z word-loop2
 
 	position @ buffer @ + buffer-length @ buffer @ + 
-	> %if false %else position @ buffer @ + %then 
+	> %if 
+		false 
+	%else
+		position @ buffer-length @ = %if
+			false
+		%else
+			position @ buffer @ + 
+		%then
+	%then 
 %;
 
 \ Check if the string at the ptr is a valid integer
 %: number?
 	position @
+	
+	position @ buffer @ + c@ 45 = %if
+		position 1+!
+	%then
+
 	~isnumber-loop
 		position @ buffer @ + c@
 		47 58 within? not %if false swap position !  exit %then
@@ -186,12 +200,70 @@
 	true swap position !
 %;
 
+\ Convert the given string to an integer on the stack
+%variable result
+%variable negated
+%: number
+	result 0!
+	dup c@ 45 = %if 1 + true %else false %then negated !
+	~number-loop
+		dup c@ dup
+		dup %if result @ 10 * + 48 - result ! %then
+		swap 1 + swap
+	%goto-nz number-loop
+	negated @ %if result @ negate result ! %then
+	drop drop result @
+%;
+
 %: create here @ last @ , last ! word strmov %;
-%: variable create %lit lit , here @ 0 , %lit exit , here @ ! here ws+! %;
+%: variable create %lit enter , %lit lit , here @ 0 , %lit exit , here @ 0 , swap ! %;
 %: : create [ %lit enter , %;
-%: ;  %lit exit , ] %;
-%: cfa ws + dup strlen + %;
+%C: ;  %lit exit , ] %;
+%: cfa ws + dup strlen + 1 + %;
 %: ` word find cfa %;
+
+%variable errorlevel
+%: interp
+	prepare
+	~shell-loop-inner
+		word found !
+		found @ %if
+			state @ not %if
+				found @ find found !
+				found @ %if
+					found @ cfa exec
+				%else
+					number? %if 
+						buffer @ position @ + number
+						true found !
+					%else
+						true errorlevel !
+					%then
+				%then
+			%else
+				found @ cfind found !
+				found @ %if
+					found @ cfa exec
+				%else
+					position @ buffer @ + found !
+					found @ find found !
+					found @ %if
+						found @ cfa ,
+					%else
+						number? %if
+							%lit lit ,
+							buffer @ position @ + number ,
+							true found !
+							false errorlevel !
+						%else
+							true errorlevel !
+						%then
+					%then
+				%then
+			%then
+		%then
+	found @ %goto-nz shell-loop-inner
+%;
 
 \ --------------------------
 \ Initialize the environment

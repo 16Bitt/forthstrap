@@ -309,9 +309,56 @@ key_BEGIN:
 	push ax
 	jmp next
 
+exec_start:
+	dw key_start
+	db "exec", 0
+exec_CFA:
+	dw exec_BEGIN
+exec_BEGIN:
+	pop bx
+	mov ax, word [bx]
+	jmp ax
+
+MULT_start:
+	dw exec_start
+	db "*", 0
+MULT_CFA:
+	dw MULT_BEGIN
+MULT_BEGIN:
+	pop bx
+	pop ax
+	imul ax, bx
+	push ax
+	jmp next
+
+rem_start:
+	dw MULT_start
+	db "rem", 0
+rem_CFA:
+	dw rem_BEGIN
+rem_BEGIN:
+	xor dx, dx
+	pop bx
+	pop ax
+	div bx
+	push dx
+	jmp next
+
+SLASH_start:
+	dw rem_start
+	db "/", 0
+SLASH_CFA:
+	dw SLASH_BEGIN
+SLASH_BEGIN:
+	pop bx
+	pop ax
+	div bx
+	push ax
+	jmp next
+
 ;ws ( -- word-size)
 ws_start:
-	dw GTr_start
+	dw SLASH_start
 	db "ws", 0
 ws_CFA:
 	dw ws_BEGIN

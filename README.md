@@ -18,7 +18,7 @@ Then, you need to pick what components you want to include in your distribution 
 
 * generic.forth-- Basic words and syntax, enough to start loading words at runtime
 * io.forth-- Words like . .s etc
-* payload.forth-- The testing suite, has a lot of edge case
+* payload.forth-- Where startup code goes
 * More are coming! Expect a string.forth, disk.forth, and math.forth soon!
 
 Now you're ready to compile to assembler:

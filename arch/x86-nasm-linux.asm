@@ -165,8 +165,31 @@ DASH_BEGIN:
 	push eax
 	jmp next
 
-endDASHofDASHmem_start:
+MULT_start:
 	dd DASH_start
+	db "*", 0
+MULT_CFA:
+	dd MULT_BEGIN
+MULT_BEGIN:
+	clc
+	pop ebx
+	pop eax
+	imul eax, ebx
+	push eax
+	jmp next
+
+exec_start:
+	dd MULT_start
+	db "exec", 0
+exec_CFA:
+	dd exec_BEGIN
+exec_BEGIN:
+	pop ebx
+	mov eax, dword [ebx]
+	jmp eax
+
+endDASHofDASHmem_start:
+	dd exec_start
 	db "end-of-mem", 0
 endDASHofDASHmem_CFA:
 	dd endDASHofDASHmem_BEGIN

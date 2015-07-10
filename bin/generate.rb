@@ -23,7 +23,7 @@ def number? n
 	return true
 end
 
-def convert_to_CFA astr
+def subst astr
 	str = astr.dup
 	str.gsub! "@", "AT"
 	str.gsub! "!", "EXC"
@@ -47,61 +47,22 @@ def convert_to_CFA astr
 	str.gsub! "2", "TWO"
 	str.gsub! "<", "LT"
 	str.gsub! ">", "GT"
+	str.gsub! "*", "MULT"
+	return str
+end
 
+def convert_to_CFA astr
+	str = subst astr
 	return str + "_CFA"
 end
 
 def convert_to_lbl astr
-	str = astr.dup
-	str.gsub! "@", "AT"
-	str.gsub! "!", "EXC"
-	str.gsub! "-", "DASH"
-	str.gsub! "'", "SQUOT"
-	str.gsub! '"', "DQUOT"
-	str.gsub! ":", "COLON"
-	str.gsub! ";", "SCOLON"
-	str.gsub! ",", "COMMA"
-	str.gsub! "`", "TICK"
-	str.gsub! "+", "PLUS"
-	str.gsub! "=", "EQUAL"
-	str.gsub! "\\", "BSLASH"
-	str.gsub! "/", "SLASH"
-	str.gsub! ".", "DOT"
-	str.gsub! "]", "RBRACK"
-	str.gsub! "[", "LBRACK"
-	str.gsub! "%", "PERCN"
-	str.gsub! "0", "ZERO"
-	str.gsub! "1", "ONE"
-	str.gsub! "2", "TWO"
-	str.gsub! "<", "LT"
-	str.gsub! ">", "GT"
+	str = subst astr
 	return str + "_start"
 end
 
 def convert_to_anon astr
-	str = astr.dup
-	str.gsub! "@", "AT"
-	str.gsub! "!", "EXC"
-	str.gsub! "-", "DASH"
-	str.gsub! "'", "SQUOT"
-	str.gsub! '"', "DQUOT"
-	str.gsub! ":", "COLON"
-	str.gsub! ";", "SCOLON"
-	str.gsub! ",", "COMMA"
-	str.gsub! "`", "TICK"
-	str.gsub! "+", "PLUS"
-	str.gsub! "=", "EQUAL"
-	str.gsub! "\\", "BSLASH"
-	str.gsub! "/", "SLASH"
-	str.gsub! ".", "DOT"
-	str.gsub! "]", "RBRACK"
-	str.gsub! "[", "LBRACK"
-	str.gsub! "%", "PERCN"
-	str.gsub! "0", "ZERO"
-	str.gsub! "1", "ONE"
-	str.gsub! "2", "TWO"
-	str.gsub! "<", "LT"
-	str.gsub! ">", "GT"
+	str = subst astr
 	return str + "_anon"
 end
 
@@ -213,7 +174,7 @@ puts "\tSAVE_WS #{convert_to_CFA 'lit'}"
 puts "\tSAVE_WS label#{label}"
 puts "\tSAVE_WS #{convert_to_CFA 'exit'}"
 puts "label#{label}:"
-puts "\tSAVE_WS #{last}"
+puts "\tSAVE_WS #{convert_to_lbl 'last'}"
 puts
 label += 1
 
@@ -226,6 +187,6 @@ puts "\tSAVE_WS #{convert_to_CFA 'lit'}"
 puts "\tSAVE_WS label#{label}"
 puts "\tSAVE_WS #{convert_to_CFA 'exit'}"
 puts "label#{label}:"
-puts "\tSAVE_WS #{clast}"
+puts "\tSAVE_WS #{convert_to_lbl 'clast'}"
 puts
 label += 1

@@ -1,5 +1,5 @@
 \ io.forth depends on the following words: key emit
-
+\ io.forth depends on the following vocabularies: generic
 
 \ ---------------
 \ Dot vocabulary
@@ -44,9 +44,11 @@
 \ Shell Code
 \ ---------------
 
+%variable keyecho
+
 %: line
 	~line-loop
-		key dup emit dup
+		key keyecho @ %if dup emit %then dup
 		13 = %if drop cr exit %then
 		buffer @ position @ + c!
 		position 1+!
@@ -55,6 +57,7 @@
 	cr
 %;
 
+%variable found
 %: shell
 	here @ buffer !
 	dup allot buffer-length !
@@ -62,11 +65,15 @@
 		clear
 		65 buffer @ c!
 		2 position !
-		line prepare cr
-		~shell-loop-inner
-			word dup dup %if position @ . space dup .s find . space number? . cr %else drop %then
-		%goto-nz shell-loop-inner
-		cr 
+		line cr
+		
+		3 spaces interp
+		errorlevel @ %if
+			error
+			false errorlevel ! 
+		%else 
+			ok 
+		%then cr
 	%goto shell-loop
 %;
 
@@ -90,3 +97,19 @@
 	%goto-nz spaces-loop
 	drop
 %;
+
+%: list
+	last @
+	~list-loop
+		dup ws + .s
+		@ dup
+	%goto-nz list-loop
+
+	drop
+%;
+
+%: ok
+	space 79 emit 75 emit 46 emit cr
+%;
+
+%: error 33 emit 33 emit 33 emit %;
