@@ -5,6 +5,8 @@
 \ Dot vocabulary
 \ ---------------
 
+%: wait key drop %;
+
 %: tohex
 	dup 4 shr 15 and dup
 	10 < %if 48 + %else 10 - 65 + %then emit
@@ -46,12 +48,29 @@
 
 %variable keyecho
 
+\ This is the line editor
+\ It's state depends on:
+\ BUFFER BUFFER-LENGTH POSITION KEYECHO
 %: line
 	~line-loop
-		key keyecho @ %if dup emit %then dup
-		13 = %if drop cr exit %then
-		buffer @ position @ + c!
-		position 1+!
+		key dup
+		dup 13 = %if drop drop cr exit %then
+		8 = %if
+			drop
+			position @ 2 > %if
+				0 buffer @ position @ + c!
+				position 1-!
+				0 buffer @ position @ + c!
+				keyecho @ %if
+					8 emit space 8 emit
+				%then
+			%then
+		%else
+			keyecho @ %if dup emit %then
+			buffer @ position @ + c!
+			position 1+!
+		%then
+
 		buffer @ position @ + buffer @ buffer-length @ + <
 	%goto-nz line-loop
 	cr
@@ -65,15 +84,15 @@
 		clear
 		65 buffer @ c!
 		2 position !
-		line cr
+		ok line
 		
 		3 spaces interp
 		errorlevel @ %if
 			error
 			false errorlevel ! 
-		%else 
-			ok 
-		%then cr
+		%then
+		cr
+		cr
 	%goto shell-loop
 %;
 
@@ -109,7 +128,7 @@
 %;
 
 %: ok
-	space 79 emit 75 emit 46 emit cr
+	space 79 emit 75 emit 46 emit space
 %;
 
 %: error 33 emit 33 emit 33 emit %;
