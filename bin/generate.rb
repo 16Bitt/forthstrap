@@ -165,6 +165,20 @@ while index < stream.length
 	index += 1
 end
 
+puts "#{convert_to_lbl 'clast'}:"
+puts "\tSAVE_WS #{clast}"
+puts "\tSTRING \"clast\", 0"
+puts "#{convert_to_CFA 'clast'}:"
+puts "\tSAVE_WS #{convert_to_CFA 'enter'}"
+puts "\tSAVE_WS #{convert_to_CFA 'lit'}"
+puts "\tSAVE_WS label#{label}"
+puts "\tSAVE_WS #{convert_to_CFA 'exit'}"
+puts "label#{label}:"
+puts "\tSAVE_WS #{convert_to_lbl 'clast'}"
+puts
+label += 1
+
+
 puts "#{convert_to_lbl 'last'}:"
 puts "\tSAVE_WS #{last}"
 puts "\tSTRING \"last\", 0"
@@ -178,15 +192,4 @@ puts "\tSAVE_WS #{convert_to_lbl 'last'}"
 puts
 label += 1
 
-puts "#{convert_to_lbl 'clast'}:"
-puts "\tSAVE_WS #{clast}"
-puts "\tSTRING \"clast\", 0"
-puts "#{convert_to_CFA 'clast'}:"
-puts "\tSAVE_WS #{convert_to_CFA 'enter'}"
-puts "\tSAVE_WS #{convert_to_CFA 'lit'}"
-puts "\tSAVE_WS label#{label}"
-puts "\tSAVE_WS #{convert_to_CFA 'exit'}"
-puts "label#{label}:"
-puts "\tSAVE_WS #{convert_to_lbl 'clast'}"
-puts
-label += 1
+

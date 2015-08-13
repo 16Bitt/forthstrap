@@ -265,6 +265,16 @@
 	found @ %goto-nz shell-loop-inner
 %;
 
+
+\ --------------------------
+\ Runtime conditionals
+\ --------------------------
+
+%C: if %;
+%C: then %;
+%C: else %;
+
+
 \ --------------------------
 \ Initialize the environment
 \ --------------------------
