@@ -49,7 +49,7 @@
 %variable keyecho
 
 \ This is the line editor
-\ It's state depends on:
+\ Its state depends on:
 \ BUFFER BUFFER-LENGTH POSITION KEYECHO
 %: line
 	~line-loop

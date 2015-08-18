@@ -46,6 +46,7 @@
 %: negate 0 swap - %;
 \ n lower upper -- flag
 %: within? 2over > swap 2over < and swap drop %;
+%: cells ws * %;
 
 \ -----------------------
 \ HERE related vocabulary
@@ -270,13 +271,18 @@
 \ Runtime conditionals
 \ --------------------------
 
-%C: if %;
-%C: then %;
-%C: else %;
+%variable ps
+%: ps-init here @ ps ! 32 cells allot %;
+%: >p ps @ ! ps ws+! %;
+%: p> ps ws-! ps @ @ %;
+
+%C: if %lit jz , here @ >p 0 , %;
+%C: then p> here @ swap ! %;
+%C: else %lit jp , p> here @ >p 0 , here @ swap ! %;
 
 
 \ --------------------------
 \ Initialize the environment
 \ --------------------------
 
-%: init heap-init %;
+%: init heap-init ps-init %;
