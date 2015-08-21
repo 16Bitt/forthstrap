@@ -29,9 +29,11 @@
 %: swap reg1 ! reg0 ! reg1 @ reg0 @ %;
 %: drop reg0 ! %;
 %: 2dup reg0 ! reg1 ! reg1 @ reg0 @ reg1 @ reg0 @ %;
+%: 3dup reg0 ! reg1 ! reg2 ! reg2 @ reg1 @ reg0 @ reg2 @ reg1 @ reg0 @ %;
 %: 2over reg0 ! reg1 ! reg2 ! reg2 @ reg1 @ reg0 @ reg2 @ %;
 
 \ Common words
+%: 1+ 1 + %;
 %: 1+! dup @ 1 + swap ! %;
 %: 2+! dup @ 2 + swap ! %;
 %: ws+! dup @ ws + swap ! %;
@@ -271,15 +273,54 @@
 \ Runtime conditionals
 \ --------------------------
 
+\ Control flow stack
 %variable ps
 %: ps-init here @ ps ! 32 cells allot %;
 %: >p ps @ ! ps ws+! %;
 %: p> ps ws-! ps @ @ %;
 
+\ Conditionals
 %C: if %lit jz , here @ >p 0 , %;
 %C: then p> here @ swap ! %;
 %C: else %lit jp , p> here @ >p 0 , here @ swap ! %;
 
+\ Uncounted loops
+%C: begin here @ >p %;
+%C: again %lit jp , p> , %;
+%C: while %lit jz , here @ >p 0 , %;
+%C: repeat p> %lit jp , p> , here @ swap ! %;
+
+\ Counted loops
+%variable depth
+
+%: i depth @ 1 < %if 
+	true errorlevel ! 
+		%else 
+	r> r> r> 3dup >r >r >r swap drop swap drop
+		%then 
+%;
+
+%C: do depth 1+! %lit >r , %lit >r , here @ >p %;
+%C: ?do %;
+%C: loop
+	%lit r> ,
+	%lit r> ,
+	%lit 1+ ,
+	%lit 2dup ,
+	%lit >r ,
+	%lit >r ,
+	%lit > ,
+	%lit jnz ,
+	p> ,
+	%lit r> ,
+	%lit drop ,
+	%lit r> ,
+	%lit drop ,
+	%lit depth ,
+	%lit 1-! ,
+%;
+
+%C: unloop r> drop r> drop %;
 
 \ --------------------------
 \ Initialize the environment

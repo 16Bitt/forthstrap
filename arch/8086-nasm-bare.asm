@@ -293,8 +293,19 @@ GTr_BEGIN:
 	add bp, 2
 	jmp next
 
-key_start:
+rGT_start:
 	dw GTr_start
+	db ">r", 0
+rGT_CFA:
+	dw rGT_BEGIN
+rGT_BEGIN:
+	sub bp, 2
+	mov ax, word [bp]
+	push ax
+	jmp next
+
+key_start:
+	dw rGT_start
 	db "key", 0
 key_CFA:
 	dw key_BEGIN
