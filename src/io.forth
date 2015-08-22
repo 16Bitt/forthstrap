@@ -123,7 +123,13 @@
 		dup ws + .s
 		@ dup
 	%goto-nz list-loop
-
+	drop
+	
+	[clast] @
+	~list-loop2
+		dup ws + .s
+		@ dup
+	%goto-nz list-loop2
 	drop
 %;
 
@@ -131,4 +137,4 @@
 	space 79 emit 75 emit 46 emit space
 %;
 
-%: error 33 emit 33 emit 33 emit %;
+%: error 33 emit 33 emit 33 emit space errorlevel @ . %;

@@ -367,9 +367,18 @@ SLASH_BEGIN:
 	push ax
 	jmp next
 
+ROM_ADDR_start:
+	dw SLASH_start
+	db "ROM_ADDR", 0
+ROM_ADDR_CFA:
+	dw ROM_ADDR_BEGIN
+ROM_ADDR_BEGIN:
+	push word ROM_ADDR_TEXT
+	jmp next
+
 ;ws ( -- word-size)
 ws_start:
-	dw SLASH_start
+	dw ROM_ADDR_start
 	db "ws", 0
 ws_CFA:
 	dw ws_BEGIN
@@ -383,4 +392,9 @@ hello_str: db "hello, world", 0
 
 %include "arch/forth.asm"
 
+;This is an example of how to pack code into the binary
+ROM_ADDR_TEXT:
+	db "~ "	;The first line is ignored
+	incbin "src/string.forth"
+	db 0
 end_of_forth:

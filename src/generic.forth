@@ -108,7 +108,7 @@
 
 %variable state
 %: [ 1 state ! %;
-%: ] 0 state ! %;
+%C: ] 0 state ! %;
 
 \ Finds a word in the runtime vocab list
 %: find
@@ -219,6 +219,13 @@
 %;
 
 %: create here @ last @ , last ! word strmov %;
+
+%C: does> ; [
+	here @ clast @ , clast ! 
+	last @ ws + strmov
+	%lit enter ,
+%; 
+
 %: variable create %lit enter , %lit lit , here @ 0 , %lit exit , here @ 0 , swap ! %;
 %: : create [ %lit enter , %;
 %C: ;  %lit exit , ] %;
@@ -226,6 +233,9 @@
 %: ` word find cfa %;
 
 %variable errorlevel
+%: RuntimeWordNotFound 1 %;
+%: CtimeWordNotFound 2 %;
+
 %: interp
 	prepare
 	~shell-loop-inner
@@ -240,7 +250,7 @@
 						buffer @ position @ + number
 						true found !
 					%else
-						true errorlevel !
+						RuntimeWordNotFound errorlevel !
 					%then
 				%then
 			%else
@@ -259,7 +269,7 @@
 							true found !
 							false errorlevel !
 						%else
-							true errorlevel !
+							CtimeWordNotFound errorlevel !
 						%then
 					%then
 				%then
@@ -320,7 +330,10 @@
 	%lit 1-! ,
 %;
 
-%C: unloop r> drop r> drop %;
+%: unloop r> r> drop r> drop >r %;
+%: [clast] clast %;
+%C: literal ` , %;
+%C: c-literal word cfind cfa , %;
 
 \ --------------------------
 \ Initialize the environment
