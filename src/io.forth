@@ -137,4 +137,4 @@
 	space 79 emit 75 emit 46 emit space
 %;
 
-%: error 33 emit 33 emit 33 emit space errorlevel @ . %;
+%: error 33 emit 33 emit 33 emit space errorlevel @ . ] %;

@@ -7,27 +7,48 @@
 : error! errorlevel ! ;
 : char word c@ does> lit literal lit , word c@ , ;
 
+variable strp
+: string-init here @ swap allot strp ! ;
+: str, 
+  strp @ swap dup strlen 0 do
+   dup i + c@ strp @ c!
+   strp 1+!
+  loop
+  0 strp @ c!
+  strp 1+!
+  drop
+;
+
+200 string-init
+
 ( Forthstrap uses strings beginning and ending a space delimited " )
-: " 
- NoRuntimeEquivalent error!
+: "
+ strp @
+ begin 
+   word dup c@ char "
+   = if strp 1-! 0 strp @ c! strp 1+! drop exit then
+   str, drop strp 1-! 32 strp @ c! strp 1+!
+ again
+
  does>
+
  lit literal jp , here @ 0 ,
  here @
  begin 
    word dup c@ char "
-   = if 0 c, drop swap here @ swap ! lit literal lit , , exit then
+   = if here 1-! 0 c, drop swap here @ swap ! lit literal lit , , exit then
    strmov here 1-! 32 c,
  again
 ;
 
 ( Same as before, but print after the last " )
-: ." NoRuntimeEquivalent error!
+: ."
+  literal " .s
   does> c-literal " 
   lit literal .s ,
 ;
 
+off @echo !
+
 ( The first visible payload )
-: welcome cr ." Welcome to forthstrap! " cr cr ;
-welcome
-
-
+cr cr ." Welcome to forthstrap! " counter @ . space ." runtime words compiled. " cr cr

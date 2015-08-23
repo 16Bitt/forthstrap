@@ -4,6 +4,8 @@
 \	interpreter, but is simply intended to bootstrap an interpreter for
 \	you. See github.com/16Bitt/forthstrap for more info.
 
+\ depends on: io.forth
+
 \ Assuming that ! c! @ c@ jp jz and arithmetic operators are present
 \ Words starting with % are compiler words
 
@@ -181,9 +183,12 @@
 		position @ buffer-length @ = %if
 			false
 		%else
-			position @ buffer @ + 
+			position @ buffer @ +
+			@echo @ %if
+				dup .s
+			%then
 		%then
-	%then 
+	%then
 %;
 
 \ Check if the string at the ptr is a valid integer
@@ -235,6 +240,10 @@
 %variable errorlevel
 %: RuntimeWordNotFound 1 %;
 %: CtimeWordNotFound 2 %;
+%variable counter
+%variable @echo
+%: on true %;
+%: off false %;
 
 %: interp
 	prepare
@@ -275,6 +284,7 @@
 				%then
 			%then
 		%then
+	counter 1+!
 	found @ %goto-nz shell-loop-inner
 %;
 
@@ -303,14 +313,17 @@
 \ Counted loops
 %variable depth
 
-%: i depth @ 1 < %if 
-	true errorlevel ! 
-		%else 
-	r> r> r> 3dup >r >r >r swap drop swap drop
-		%then 
+%: InvalidDepth 4 %;
+
+%: i 
+	depth @ 1 < %if
+		InvalidDepth errorlevel !
+	%else
+		r> r> r> 3dup >r >r >r swap drop swap drop 
+	%then
 %;
 
-%C: do depth 1+! %lit >r , %lit >r , here @ >p %;
+%C: do %lit depth , %lit 1+! , %lit >r , %lit >r , here @ >p %;
 %C: ?do %;
 %C: loop
 	%lit r> ,
