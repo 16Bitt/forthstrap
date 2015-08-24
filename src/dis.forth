@@ -9,7 +9,7 @@
   again
 ;
 
-: dis ( len addr )
+: dis ( len addr -- )
   cr
   ` dup 0 = if drop drop exit then
   swap 0 do
@@ -24,6 +24,28 @@
   drop 
 ;
 
-cr cr decorator
-." dis.forth loaded! " counter @ . space ." words compiled. " cr
-decorator cr cr
+: printable? ( char -- flag )
+   31 127 within?
+;
+
+: ascii-dump ( len addr -- )
+  cr
+  dup 1 - .
+  40 spaces 18 dashes cr
+  swap 0 do
+    dup . 4 spaces
+    16 0 do
+      dup c@ tohex
+      1 +
+    loop
+    4 spaces char | emit
+    16 -
+    16 0 do
+      dup c@ dup printable? not if drop char . emit else emit then
+      1 +
+    loop
+    char | emit cr
+  loop
+  . 40 spaces 18 dashes cr
+;
+

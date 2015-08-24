@@ -295,7 +295,7 @@ GTr_BEGIN:
 
 rGT_start:
 	dw GTr_start
-	db ">r", 0
+	db "r>", 0
 rGT_CFA:
 	dw rGT_BEGIN
 rGT_BEGIN:

@@ -58,8 +58,7 @@
 
 %variable here
 \ This will be called at the start of the FORTH
-%: heap-init end-of-mem 512 + here ! %;
-%: , here @ ! here ws+! %;
+%: heap-init end-of-mem 512 + here ! %; %: , here @ ! here ws+! %;
 %: c, here @ c! here 1+! %;
 %: allot here @ + here ! %;
 

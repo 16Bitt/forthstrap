@@ -56,9 +56,17 @@ variable strp
 
 : is ` exec swap ! does> ` , lit literal swap , lit literal ! , ;
 
-( The first visible payload )
-cr cr
-decorator
-." string.forth loaded! " counter @ . space ." words compiled. " cr
-decorator
-cr cr
+: fromhex ( str -- n )
+   0 swap
+   dup strlen 0 do
+      swap 16 * swap
+      dup c@ dup char 0 1 - char 9 1 + within? 
+      if char 0 - swap >r + r>
+      else char A - 10 + swap >r + r>
+      then
+      1 +
+   loop
+   drop
+;
+
+: h ( <hex> -- n ) word fromhex does> word fromhex lit lit , , ;
