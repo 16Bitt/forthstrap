@@ -396,5 +396,9 @@ hello_str: db "hello, world", 0
 ROM_ADDR_TEXT:
 	db "~ "	;The first line is ignored
 	incbin "src/string.forth"
+	db " "
+	incbin "src/fat.forth"
+	db " "
+	incbin "src/dis.forth"
 	db 0
 end_of_forth:

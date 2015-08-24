@@ -3,6 +3,7 @@
 ;
 
 ( Welcome to runtime forth! Now the real fun begins )
+( This will be the first file loaded at runtime )
 : NoRuntimeEquivalent 3 ;
 : error! errorlevel ! ;
 : char word c@ does> lit literal lit , word c@ , ;
@@ -19,7 +20,7 @@ variable strp
   drop
 ;
 
-200 string-init
+512 string-init
 
 ( Forthstrap uses strings beginning and ending a space delimited " )
 : "
@@ -48,7 +49,16 @@ variable strp
   lit literal .s ,
 ;
 
-off @echo !
+( Some code to decorate output )
+: dash char - emit ;
+: dashes 0 do dash loop ;
+: decorator 79 dashes cr ;
+
+: is ` exec swap ! does> ` , lit literal swap , lit literal ! , ;
 
 ( The first visible payload )
-cr cr ." Welcome to forthstrap! " counter @ . space ." runtime words compiled. " cr cr
+cr cr
+decorator
+." string.forth loaded! " counter @ . space ." words compiled. " cr
+decorator
+cr cr
