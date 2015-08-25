@@ -376,9 +376,32 @@ ROM_ADDR_BEGIN:
 	push word ROM_ADDR_TEXT
 	jmp next
 
+cylinder:	dw 0
+head:		dw 0
+sector:		dw 0
+
+diskread_start:
+	dw ROM_ADDR_start
+	db "diskread", 0
+diskread_CFA:
+	dw diskread_BEGIN
+diskread_BEGIN:
+	pop word [sector]
+	pop word [head]
+	pop word [cylinder]
+	jmp next
+
+diskwrite_start:
+	dw diskread_start
+	db "diskwrite", 0
+diskwrite_CFA:
+	dw diskread_BEGIN
+diskwrite_BEGIN:
+	jmp next
+
 ;ws ( -- word-size)
 ws_start:
-	dw ROM_ADDR_start
+	dw diskwrite_start
 	db "ws", 0
 ws_CFA:
 	dw ws_BEGIN
