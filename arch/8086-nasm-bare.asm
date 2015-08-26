@@ -379,6 +379,8 @@ ROM_ADDR_BEGIN:
 cylinder:	dw 0
 head:		dw 0
 sector:		dw 0
+destination:	dw 0
+disk:		dw 0
 
 diskread_start:
 	dw ROM_ADDR_start
@@ -389,6 +391,18 @@ diskread_BEGIN:
 	pop word [sector]
 	pop word [head]
 	pop word [cylinder]
+	pop word [disk]
+	pop word [destination]
+	pusha
+	mov al, 1
+	mov ah, 0x02
+	mov ch, byte [cylinder]
+	mov cl, byte [sector]
+	mov dh, byte [head]
+	mov bx, word [destination]
+	mov dl, byte [disk]
+	int 0x13
+	popa
 	jmp next
 
 diskwrite_start:
