@@ -53,8 +53,9 @@
 \ BUFFER BUFFER-LENGTH POSITION KEYECHO
 %: line
 	~line-loop
-		key dup
-		dup 13 = %if drop drop cr exit %then
+		key dup 
+		dup 13 = %if drop drop cr 
+		exit %then
 		8 = %if
 			drop
 			position @ 2 > %if
@@ -72,9 +73,16 @@
 		%then
 
 		buffer @ position @ + buffer @ buffer-length @ + <
+
+			\ ~looplooploop
+			\ %goto looplooploop
 	%goto-nz line-loop
 	cr
+	
+
 %;
+
+%: hang ~hangloop %goto hangloop %;
 
 %variable found
 %: shell

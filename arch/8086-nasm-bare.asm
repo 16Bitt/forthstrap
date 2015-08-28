@@ -9,6 +9,12 @@ forth_start:
 	mov gs, ax
 	mov ss, ax
 	mov es, ax
+	
+	mov si, 0
+	mov ax, istub
+	stosw
+	mov ax, 0
+	stosw
 
 	mov si, PROGRAM
 	mov bp, end_of_forth
@@ -17,6 +23,10 @@ forth_start:
 PROGRAM:
 	dw payload_CFA
 	dw forth_exit
+
+istub:
+	nop
+	iret
 
 forth_exit:
 	dw forth_exit_BEGIN
@@ -338,7 +348,7 @@ MULT_CFA:
 MULT_BEGIN:
 	pop bx
 	pop ax
-	imul ax, bx
+	mul bx
 	push ax
 	jmp next
 
@@ -351,8 +361,13 @@ rem_BEGIN:
 	xor dx, dx
 	pop bx
 	pop ax
+	or bx, bx
+	jz badrem
 	div bx
 	push dx
+	jmp next
+badrem:
+	push word 0
 	jmp next
 
 SLASH_start:
@@ -363,8 +378,14 @@ SLASH_CFA:
 SLASH_BEGIN:
 	pop bx
 	pop ax
+	xor dx, dx
+	or bx, bx
+	jz badslash
 	div bx
 	push ax
+	jmp next
+badslash:
+	push word 0
 	jmp next
 
 ROM_ADDR_start:
