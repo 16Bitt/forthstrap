@@ -70,3 +70,12 @@ variable strp
 ;
 
 : h ( <hex> -- n ) word fromhex does> word fromhex lit lit , , ;
+
+: strncmp ( str1 str2 n -- flag )
+        0 do
+                2dup c@ swap c@ = not if drop drop unloop false exit then
+                1+ swap 1+
+        loop
+        drop drop
+        true
+;

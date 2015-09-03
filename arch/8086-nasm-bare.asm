@@ -455,8 +455,8 @@ ROM_ADDR_TEXT:
 	db "~ "	;The first line is ignored
 	incbin "src/string.forth"
 	db " "
-	incbin "src/fat.forth"
+	incbin "src/disk.forth"
 	db " "
-	incbin "src/dis.forth"
+	incbin "src/ed.forth"
 	db 0
 end_of_forth:

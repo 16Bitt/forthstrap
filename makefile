@@ -13,6 +13,8 @@ linux: bootstrap
 	dd conv=notrunc if=boot.bin of=floppy.img bs=1 seek=64 count=448
 	nasm -fbin arch/8086-nasm-bare.asm -o 8086.bin
 	mcopy -o -i floppy.img 8086.bin ::/PAYLOAD.SYS
+	bin/mkdisk.sh
+	dd if=raw_img.bin of=floppy.img conv=notrunc bs=512 seek=770
 
 linux-run: linux
 	gdb x86

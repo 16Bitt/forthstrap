@@ -51,6 +51,7 @@
 \ n lower upper -- flag
 %: within? 2over > swap 2over < and swap drop %;
 %: cells ws * %;
+%: even? 1 and not %;
 
 \ -----------------------
 \ HERE related vocabulary
