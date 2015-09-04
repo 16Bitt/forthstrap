@@ -17,9 +17,12 @@ current-block @ readblock
 ;
 
 : get-cr ( -- str )
-       0 disk 512 + !
-       10 disk 514 + c!
+        cr-index @ not if
+                disk cr-index 1+! exit
+        then
+
        begin
+        10 disk 514 + c!
         disk cr-index @ + c@
         dup 10 = if
                 cr-index 1+!
@@ -36,18 +39,18 @@ current-block @ readblock
 ;
 
 : show ( start len -- )
-        cr-index 0! cr
-        dup 0 = not if
-                swap dup 1 - 0 do
+        cr-index 0! cr 
+        swap dup 0 = not if
+                1 - 0 do
                         get-cr drop
-                loop swap
+                loop
         else
                 drop
         then
 
         0 do
                 dup i + . space get-cr dup if .cr else drop ." EOF " cr then
-        loop drop
+        loop
 ;
 
 : disk>> ( start -- )
@@ -62,8 +65,10 @@ current-block @ readblock
 
 : explore
         begin
+                cr decorator
                 cr ." At block " current-block @ .
                 0 18 show
+                decorator
                 ." Use L and H to navigate forward and backward. q to quit. " cr
                 key dup char l = if p+ then
                 dup char h = if p- then

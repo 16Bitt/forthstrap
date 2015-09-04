@@ -1,3 +1,4 @@
+
 \ FORTHSTRAP
 \ This file will be processed by the FORTHSTRAP tool to create a custom
 \ 	forth distribution. This code cannot be recompiled by the generated

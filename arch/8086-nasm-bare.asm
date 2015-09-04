@@ -458,5 +458,7 @@ ROM_ADDR_TEXT:
 	incbin "src/disk.forth"
 	db " "
 	incbin "src/ed.forth"
+	db " "
+	incbin "src/dis.forth"
 	db 0
 end_of_forth:
