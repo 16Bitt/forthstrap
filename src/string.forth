@@ -79,3 +79,11 @@ variable strp
         drop drop
         true
 ;
+
+: memmov ( src dest n -- )
+        0 do
+                2dup swap c@ swap c!
+                1 + swap 1 + swap
+        loop
+        drop drop
+;
