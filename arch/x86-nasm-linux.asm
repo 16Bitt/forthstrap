@@ -15,9 +15,12 @@ forth_start:
 
 PROGRAM:
 	dd payload_CFA
-	dd forth_exit
+	dd forth_exit_CFA
 
 forth_exit:
+	dd 0
+	db "bye", 0
+forth_exit_CFA:
 	dd forth_exit_BEGIN
 forth_exit_BEGIN:
 	pop eax
@@ -44,7 +47,7 @@ next:
 
 ;@ ( addr -- *addr)
 AT_start:
-	dd 0
+	dd forth_exit
 	db "@", 0
 AT_CFA:
 	dd AT_BEGIN
@@ -184,9 +187,8 @@ exec_start:
 exec_CFA:
 	dd exec_BEGIN
 exec_BEGIN:
-	pop ebx
-	mov eax, dword [ebx]
-	jmp eax
+	pop eax
+	jmp [eax]
 
 endDASHofDASHmem_start:
 	dd exec_start
@@ -227,6 +229,9 @@ emit_CFA:
 	dd emit_BEGIN
 emit_BEGIN:
 	pop eax
+	or al, al
+	jz emit_null
+emit_return:
 	mov byte [emit_buffer], al
 	pushad
 	mov eax, 4
@@ -236,6 +241,9 @@ emit_BEGIN:
 	int 0x80
 	popad
 	jmp next
+emit_null:
+	mov al, 32
+	jmp emit_return
 
 and_start:
 	dd emit_start
@@ -322,6 +330,8 @@ key_start:
 key_CFA:
 	dd key_BEGIN
 key_BEGIN:
+	push ebp
+	mov ebp, esp
 	pusha
 	mov eax, 3		;SYS_READ
 	mov ebx, 0		;stdin
@@ -329,14 +339,36 @@ key_BEGIN:
 	mov edx, 1		;one byte
 	int 0x80
 	popa
+	mov esp, ebp
+	pop ebp
 	xor eax, eax
 	mov al, byte [emit_buffer]
 	push eax
 	jmp next
 
+rGT_start:
+	dd key_start
+	db "r>", 0
+rGT_CFA:
+	dd rGT_BEGIN
+rGT_BEGIN:
+	sub ebp, 4
+	mov eax, dword [ebp]
+	push eax
+	jmp next
+
+ROM_ADDR_start:
+	dd rGT_start
+	db "ROM_ADDR", 0
+ROM_ADDR_CFA:
+	dd ROM_ADDR_BEGIN
+ROM_ADDR_BEGIN:
+	push dword code_start
+	jmp next
+
 ;ws ( -- word-size)
 ws_start:
-	dd GTr_start
+	dd ROM_ADDR_start
 	db "ws", 0
 ws_CFA:
 	dd ws_BEGIN
@@ -353,5 +385,12 @@ hello_str: db "hello, world", 0
 
 %include "arch/forth.asm"
 
+code_start:
+	db "A list "
+	incbin "src/string.forth"
+	db " "
+	incbin "src/dis.forth"
+	db 0
+
 end_of_forth:
-times 4096 db 0
+times 4096 * 8 db 0

@@ -88,7 +88,7 @@
 %: shell
 	here @ buffer !
 	dup allot buffer-length !
-	~shell-loop
+        ~shell-loop
 		clear
 		65 buffer @ c!
 		2 position !
@@ -96,7 +96,7 @@
 		
 		3 spaces interp
 		errorlevel @ %if
-			error
+                        error
 			false errorlevel ! 
 		%then
 		cr

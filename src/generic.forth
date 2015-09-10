@@ -143,7 +143,7 @@
 %: prepare
 	position 0!
 	~prepare-loop
-		position @ buffer @ + c@
+		position @ buffer @ + c@ 
 		dup 13 = %if 0 buffer @ position @ + c! %then
 		dup 10 = %if 0 buffer @ position @ + c! %then
 		    32 = %if 0 buffer @ position @ + c! %then
@@ -169,11 +169,19 @@
 %: word
 	~word-loop1
 		position 1+!
+                position @ buffer @ + buffer-length @ buffer @ + 
+                > %if 
+		        false exit
+                %then
 		buffer @ position @ + c@
 	%goto-nz word-loop1
 
 	~word-loop2
 		position 1+!
+                position @ buffer @ + buffer-length @ buffer @ + 
+                > %if 
+		        false exit
+                %then
 		position @ buffer @ + c@
 	%goto-z word-loop2
 

@@ -17,7 +17,18 @@ linux: bootstrap
 	dd if=raw_img.bin of=floppy.img conv=notrunc bs=512 seek=770
 
 linux-run: linux
-	gdb x86
+	stty raw cbreak
+	-./x86
+	stty cooked echo
+	reset
+	clear
+
+linux-dbg: linux
+	stty raw cbreak
+	-gdb x86
+	stty cooked echo
+	reset
+	clear
 
 8086-run: 8086
 	qemu-system-i386 -fda floppy.img -monitor stdio
