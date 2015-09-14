@@ -46,7 +46,9 @@
 \ Shell Code
 \ ---------------
 
+%variable bs-val
 %variable keyecho
+%: bkspc bs-val @ %;
 
 \ This is the line editor
 \ Its state depends on:
@@ -56,7 +58,7 @@
 		key dup 
 		dup 13 = %if drop drop cr 
 		exit %then
-		8 = %if
+		bkspc = %if
 			drop
 			position @ 2 > %if
 				0 buffer @ position @ + c!

@@ -390,6 +390,7 @@ code_start:
 	incbin "src/string.forth"
 	db " "
 	incbin "src/dis.forth"
+	db " 127 bs-val !"
 	db 0
 
 end_of_forth:

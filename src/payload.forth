@@ -5,7 +5,8 @@
 	init
 	
 	on @echo !
-        
+        on keyecho !
+
 	position 0!
 	ROM_ADDR buffer !
 	ROM_ADDR strlen buffer-length !
@@ -15,6 +16,5 @@
 
 	cr cr cr
 
-	off keyecho !
 	256 shell
 %;
