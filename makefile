@@ -17,14 +17,14 @@ linux: bootstrap
 	dd if=raw_img.bin of=floppy.img conv=notrunc bs=512 seek=770
 
 linux-run: linux
-	stty raw -echo
+	stty raw -echo isig
 	-./x86
 	stty cooked echo
 	reset
 	clear
 
 linux-dbg: linux
-	stty raw -echo
+	stty raw -echo isig
 	-gdb x86
 	stty cooked echo 
 	reset
