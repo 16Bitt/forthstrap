@@ -172,9 +172,9 @@ puts "\tSTRING \"clast\", 0"
 puts "#{convert_to_CFA 'clast'}:"
 puts "\tSAVE_WS #{convert_to_CFA 'enter'}"
 puts "\tSAVE_WS #{convert_to_CFA 'lit'}"
-puts "\tSAVE_WS label#{label}"
+puts "\tSAVE_WS label_CLAST"
 puts "\tSAVE_WS #{convert_to_CFA 'exit'}"
-puts "label#{label}:"
+puts "label_CLAST:"
 puts "\tSAVE_WS #{convert_to_lbl 'clast'}"
 puts
 label += 1
@@ -186,9 +186,9 @@ puts "\tSTRING \"last\", 0"
 puts "#{convert_to_CFA 'last'}:"
 puts "\tSAVE_WS #{convert_to_CFA 'enter'}"
 puts "\tSAVE_WS #{convert_to_CFA 'lit'}"
-puts "\tSAVE_WS label#{label}"
+puts "\tSAVE_WS label_LAST"
 puts "\tSAVE_WS #{convert_to_CFA 'exit'}"
-puts "label#{label}:"
+puts "label_LAST:"
 puts "\tSAVE_WS #{convert_to_lbl 'last'}"
 puts
 label += 1

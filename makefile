@@ -2,9 +2,9 @@
 bootstrap:
 	cat src/generic.forth src/io.forth src/payload.forth | ./forthstrap > arch/forth.asm
 
-linux: bootstrap
+linux: bootstrap unix_runtime
 	nasm -f elf -g arch/x86-nasm-linux.asm
-	gcc -m32 arch/x86-nasm-linux.o -o x86
+	gcc -m32 arch/x86-nasm-linux.o arch/unix/*.o -o x86
 
 8086: bootstrap
 	fasm arch/boot.asm
@@ -20,18 +20,20 @@ linux-run: linux
 	stty raw -echo isig
 	-./x86
 	stty cooked echo
-	reset
-	clear
+	echo
 
 linux-dbg: linux
 	stty raw -echo isig
 	-gdb x86
 	stty cooked echo 
-	reset
-	clear
+	echo
 
 8086-run: 8086
 	qemu-system-i386 -fda floppy.img -monitor stdio
 
+unix_runtime:
+	cd arch/unix && make
+
 clean:
 	-rm arch/*.o x86 arch/forth.asm *.bin *.img
+	cd arch/unix && make clean

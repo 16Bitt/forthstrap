@@ -1,14 +1,16 @@
 	[bits 32]
+%include "arch/x86-linux.h"
 	[global main]
 	[extern fflush]
 	[extern stdout]
 	[extern stdin]
-	[extern exit]
+	[extern _exit]
 
 segment .text
 
 main:
 forth_start:
+	call unix_runtime_init
 	mov esi, PROGRAM
 	mov ebp, end_of_forth
 	jmp next
@@ -25,8 +27,7 @@ forth_exit_CFA:
 forth_exit_BEGIN:
 	pop eax
 forth_HALT:
-	push dword 0
-	call exit
+	call _exit
 
 %macro rpush 1
 	mov [ebp], dword %0
@@ -384,6 +385,7 @@ emit_zero: dd 0
 hello_str: db "hello, world", 0
 
 %include "arch/forth.asm"
+%include "arch/unix/unix.asm"
 
 code_start:
 	db "A list "
@@ -392,6 +394,9 @@ code_start:
 	incbin "src/dis.forth"
 	db " 127 bs-val !"
 	db 0
+
+c_var_loc:
+	times 8 dd 0
 
 end_of_forth:
 times 4096 * 8 db 0
