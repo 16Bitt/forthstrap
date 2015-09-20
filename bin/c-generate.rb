@@ -19,6 +19,7 @@ def out function, name, size_in, size_out
 			SAVE_#{size_out}
 			RESTORE_STACK
 			RESTORE_REG_STATE
+			GET_RETURNS_#{size_out}
 			GO_NEXT
 	ENDOFGEN
 	$last = "#{name}_start"
