@@ -24,7 +24,6 @@ unsigned int filesize(char* filename){
 
 //F readbuff readbuff 2 0
 void readbuff(void* buffer, char* filename){
-	printf("Reading file %s...\n", filename);
 	unsigned int sz = filesize(filename);
 	if(sz == NULL)
 		return;
@@ -34,7 +33,6 @@ void readbuff(void* buffer, char* filename){
 	for(i = 0; i < sz; i++){
 		char c = fgetc(f);
 		((char*) buffer)[i] = c;
-		putchar(c);
 	}
 	
 	fclose(f);
@@ -42,7 +40,16 @@ void readbuff(void* buffer, char* filename){
 
 //F writebuff writebuff 3 0
 void writebuff(unsigned int length, void* addr, char* filename){
+	FILE* f = fopen(filename, "wb");
+	if(f == NULL)
+		return;
 
+	int i;
+	for(i = 0; i < length; i++){
+		fputc(((char*) addr)[i], f);
+	}
+
+	fclose(f);
 }
 
 //F arg_test arg_test 3 0

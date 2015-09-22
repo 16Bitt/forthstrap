@@ -392,8 +392,10 @@ code_start:
 	incbin "src/string.forth"
 	db " "
 	incbin "src/dis.forth"
+        db " "
+        incbin "src/file.forth"
 	db " 127 bs-val !"
-	db 0
+        db 0
 
 c_var_loc:
 	times 8 dd 0
