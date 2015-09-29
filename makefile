@@ -4,7 +4,7 @@ bootstrap:
 
 linux: bootstrap unix_runtime
 	nasm -f elf -g arch/x86-nasm-linux.asm
-	gcc -m32 arch/x86-nasm-linux.o arch/unix/*.o -o x86
+	gcc -m32 -lX11 arch/x86-nasm-linux.o arch/unix/*.o -o x86
 
 8086: bootstrap
 	fasm arch/boot.asm

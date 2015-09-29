@@ -1,6 +1,7 @@
 ( Forthstrap filesystem interface )
 ( Relies on readbuff writebuff filesize )
 ( Conflicts with disk.forth load.forth )
+: file.forth ;
 
 : fs? true ;
 

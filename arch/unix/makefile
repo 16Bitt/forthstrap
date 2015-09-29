@@ -1,5 +1,5 @@
 SOURCES = $(patsubst %.c,%.o,$(wildcard *.c))
-CFLAGS = -m32
+CFLAGS = -m32 -lX11
 
 all: generate
 
