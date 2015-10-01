@@ -32,9 +32,7 @@ void gfx_init(){
 	XSetBackground(disp, context, bg);
 	XSetForeground(disp, context, fg);
         XClearWindow(disp, win);
-	//XSelectInput(disp, win, ButtonPressMask|KeyPressMask|ExposureMask);
         XMapWindow(disp, win);
-	//XMapRaised(disp, win);
 }
 
 //F repaint repaint 0 0 
@@ -52,4 +50,10 @@ void gfx_end(){
 //F putpixel pix 2 0
 void putpixel(int x, int y){
         XDrawPoint(disp, win, context, x, y);
+}
+
+//F clearwindow cleargfx 0 0
+void clearwindow(){
+        XClearWindow(disp, win);
+        repaint();
 }

@@ -14,3 +14,4 @@
 : f* fmul ;
 : f/ fdiv ;
 : .f fdot ;
+: >>f fcast ;

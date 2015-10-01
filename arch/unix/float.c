@@ -43,3 +43,8 @@ int strtofloat(char* str){
 	*((float*) &ret) = atof(str);
 	return ret;
 }
+
+//F fcast fcast 1 1
+int fcast(int n){
+	return float_to_int((float) n);
+}
