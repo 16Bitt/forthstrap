@@ -183,8 +183,42 @@ MULT_BEGIN:
 	push eax
 	jmp next
 
-exec_start:
+SLASH_start:
 	dd MULT_start
+	db "/", 0
+SLASH_CFA:
+	dd SLASH_BEGIN
+SLASH_BEGIN:
+	pop ebx
+	pop eax
+	xor edx, edx
+	or ebx, ebx
+	jz baddiv
+	div ebx
+	push eax
+	jmp next
+
+rem_start:
+	dd SLASH_start
+	db "rem", 0
+rem_CFA:
+	dd rem_BEGIN
+rem_BEGIN:
+	pop ebx
+	pop eax
+	xor edx, edx
+	or ebx, ebx
+	jz baddiv
+	div ebx
+	push edx
+	jmp next
+
+baddiv:
+	push dword 0
+	jmp next
+
+exec_start:
+	dd rem_start
 	db "exec", 0
 exec_CFA:
 	dd exec_BEGIN
@@ -270,8 +304,20 @@ and_BEGIN:
 	push eax
 	jmp next
 
+xor_start:
+        dd and_start
+        db "xor", 0
+xor_CFA:
+        dd xor_BEGIN
+xor_BEGIN:
+        pop eax
+        pop ebx
+        xor eax, ebx
+        push eax
+        jmp next
+
 GT_start:
-	dd and_start
+	dd xor_start
 	db ">", 0
 GT_CFA:
 	dd GT_BEGIN
