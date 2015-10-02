@@ -46,6 +46,7 @@ def subst astr
 	str.gsub! "1", "ONE"
 	str.gsub! "2", "TWO"
 	str.gsub! "3", "THREE"
+	str.gsub! "4", "FOUR"
 	str.gsub! "<", "LT"
 	str.gsub! ">", "GT"
 	str.gsub! "*", "MULT"

@@ -4,7 +4,7 @@
 	[extern fflush]
 	[extern stdout]
 	[extern stdin]
-	[extern _exit]
+	[extern exit]
 
 segment .text
 
@@ -25,9 +25,10 @@ forth_exit:
 forth_exit_CFA:
 	dd forth_exit_BEGIN
 forth_exit_BEGIN:
-	pop eax
+	xor eax, eax
+	push eax
 forth_HALT:
-	call _exit
+	call exit
 
 %macro rpush 1
 	mov [ebp], dword %0
@@ -191,8 +192,19 @@ exec_BEGIN:
 	pop eax
 	jmp [eax]
 
+pick_start:
+   dd exec_start
+   db "pick", 0
+pick_CFA:
+   dd pick_BEGIN
+pick_BEGIN:
+   pop eax
+   shl eax, 2
+   push dword [esp + eax]
+   jmp next
+
 endDASHofDASHmem_start:
-	dd exec_start
+	dd pick_start
 	db "end-of-mem", 0
 endDASHofDASHmem_CFA:
 	dd endDASHofDASHmem_BEGIN
