@@ -26,6 +26,7 @@
 %variable reg0
 %variable reg1
 %variable reg2
+%variable reg3
 
 \ Common stack operations
 %: dup reg0 ! reg0 @ reg0 @ %;
@@ -33,7 +34,9 @@
 %: drop reg0 ! %;
 %: 2dup reg0 ! reg1 ! reg1 @ reg0 @ reg1 @ reg0 @ %;
 %: 3dup reg0 ! reg1 ! reg2 ! reg2 @ reg1 @ reg0 @ reg2 @ reg1 @ reg0 @ %;
+%: 4dup reg0 ! reg1 ! reg2 ! reg3 ! reg3 @ reg2 @ reg1 @ reg0 @ reg3 @ reg2 @ reg1 @ reg0 @ %;
 %: 2over reg0 ! reg1 ! reg2 ! reg2 @ reg1 @ reg0 @ reg2 @ %;
+%: rot reg0 ! reg1 ! reg2 ! reg0 @ reg1 @ reg2 @ %;
 
 \ Common words
 %: 1+ 1 + %;

@@ -57,3 +57,13 @@ void clearwindow(){
         XClearWindow(disp, win);
         repaint();
 }
+
+//F width width 0 1
+int width(){
+   return 640;
+}
+
+//F height height 0 1
+int height(){
+   return 480;
+}
