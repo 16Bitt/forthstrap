@@ -357,6 +357,28 @@
 %C: literal ` , %;
 %C: c-literal word cfind cfa , %;
 
+%variable currentword
+%variable lastword
+
+%: forget
+        false lastword !
+        word currentword !
+        last @
+        ~forget-loop
+             dup ws + currentword @ strcmp %if dup lastword @ swap ! %then
+             dup lastword !
+             @ dup
+        %goto-nz forget-loop drop
+        
+        false lastword !
+        clast @
+        ~forget-loop1
+             dup ws + currentword @ strcmp %if %then
+             dup lastword !
+             @ dup
+        %goto-nz forget-loop1 drop
+%;
+
 \ --------------------------
 \ Initialize the environment
 \ --------------------------
