@@ -3,18 +3,15 @@
 
 %: payload
 	init
-	
-	on @echo !
-        on keyecho !
+   
+   on keyecho !
 
 	position 0!
 	ROM_ADDR buffer !
 	ROM_ADDR strlen buffer-length !
 	interp
 
-	off @echo !
-
-	cr cr cr
+	cr
 
 	256 shell
 %;

@@ -20,18 +20,18 @@
         filesize if true else false then
 ;
 
+: d dup . cr ;
+
 : load ( filename -- )
         dup file-exists? not if drop exit then
         here @ char A c, 32 c,
         swap file-read drop
-
+        
         ( Save interpreter state )
-        buffer @ buffer-length @ position @ >r >r >r
+        found @ buffer @ buffer-length @ position @ >r  >r >r >r
         dup buffer !
         strlen buffer-length ! 
         position 0!
-        @echo is on
-        interp 
-        @echo is off
-        r> r> r> position ! buffer-length ! buffer !
+        interp
+        r> r> r> r> position ! buffer-length ! buffer ! found !
 ;
