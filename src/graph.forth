@@ -16,11 +16,9 @@ variable xstep
 10 ymax !
 
 : translate-y
-
 ;
 
 : translate-x
-
 ;
 
 : plot ( fx fy -- ) 

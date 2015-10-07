@@ -48,3 +48,8 @@ int strtofloat(char* str){
 int fcast(int n){
 	return float_to_int((float) n);
 }
+
+//F icast icast 1 1
+int icast(float f){
+   return (int) f;
+}

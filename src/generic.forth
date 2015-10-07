@@ -336,7 +336,7 @@
 %;
 
 %C: do %lit depth , %lit 1+! , %lit >r , %lit >r , here @ >p %;
-%C: ?do %;
+
 %C: loop
 	%lit r> ,
 	%lit r> ,

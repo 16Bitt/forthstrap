@@ -446,14 +446,16 @@ hello_str: db "hello, world", 0
 %include "arch/unix/unix.asm"
 
 code_start:
-	db "A list "
-	incbin "src/string.forth"
-	db " "
-	incbin "src/dis.forth"
-        db " "
-        incbin "src/file.forth"
+	db "A "
 	db " 127 bs-val !"
-        db 0
+	db " "
+   incbin "src/string.forth"
+	db " "
+   incbin "src/file.forth"
+   db " "
+   incbin "src/init.forth"
+   db " "
+   db 0
 
 c_var_loc:
 	times 8 dd 0

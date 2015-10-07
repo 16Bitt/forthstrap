@@ -15,3 +15,4 @@
 : f/ fdiv ;
 : .f fdot ;
 : >>f fcast ;
+: >>i icast ;
