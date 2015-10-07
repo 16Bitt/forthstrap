@@ -455,11 +455,11 @@ ROM_ADDR_TEXT:
 	db "~ "	;The first line is ignored
 	incbin "src/string.forth"
 	db " "
-	incbin "src/disk.forth"
+	;incbin "src/disk.forth"
 	db " "
-	incbin "src/ed.forth"
+	;incbin "src/ed.forth"
 	db " "
-	incbin "src/load.forth"
+	;incbin "src/load.forth"
 	db " 8 bs-val !"
 	db " keyecho is on"
 	db 0

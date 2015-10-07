@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo Making forthstrap installer...
+
+echo "#!/bin/sh" > forthstrap-init
+echo "cp -r $(pwd)/* ." >> forthstrap-init
+chmod a+x forthstrap-init
+mv forthstrap-init /usr/bin
+
+echo Done.

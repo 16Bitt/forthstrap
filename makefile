@@ -37,3 +37,6 @@ unix_runtime:
 clean:
 	-rm arch/*.o x86 arch/forth.asm *.bin *.img
 	cd arch/unix && make clean
+
+install:
+	bin/install
