@@ -53,3 +53,13 @@ int fcast(int n){
 int icast(float f){
    return (int) f;
 }
+
+//F csin sin 1 1
+int csin(float f){
+	return float_to_int(sin(f));
+}
+
+//F ccos cos 1 1
+int ccos(float f){
+	return float_to_int(cos(f));
+}

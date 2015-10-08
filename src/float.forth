@@ -24,5 +24,5 @@
         loop
         swap drop
 ;
-=======
+
 : >>i icast ;

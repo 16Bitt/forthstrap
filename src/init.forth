@@ -22,5 +22,8 @@ cr
 ." Loading UNIX library... " cr
 " src/unix.forth " load
 
+." Loading debugging library... " cr
+" src/dbg.forth " load
+
 ." Loading runtime settings... " cr
 " src/init1.forth " load

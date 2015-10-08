@@ -12,31 +12,43 @@ variable xstep
 variable fx
 
 ( Our defaults )
-f 10 negate xmin !
+f 10 f 0 swap f- xmin !
 f 10 xmax !
-f 10 negate ymin !
+f 10 f 0 swap f- ymin !
 f 10 ymax !
 
 : translate-y
-        height >>f ymax @ ymin @ - f/ ystep !
-        ystep @ f* >>i height swap -
+        height >>f ymax @ ymin @ f- swap f/ ystep !
+        ystep @ f/ >>i ymax @ ystep @ f/ >>i swap -
 ;
 
 : translate-x
-        width >>f xmax @ xmin @ - f/ xstep !
-        xstep @ f* >>i
+        width >>f xmax @ xmin @ f- swap f/ xstep !
+        xstep @ f/ >>i xmin @ f 0 swap f- xstep @ f/ >>i +
 ;
 
 : plot ( fx fy -- ) 
-   ystep @ f/ translate-y >r
-   xstep @ f/ translate-x r> pixel
+   translate-y swap translate-x swap pixel
 ;
 
-: graph ( >>function -- )
+: y= ( >>function -- )
         xmin @
         ` fx !
-        xmax @ >>i xmin @ >>i do
-              dup fx @ exec
+        xmax @ translate-x xmin @ translate-x do
+              dup dup
+              fx @ exec plot
               xstep @ f+
-        done
+        loop
 ;
+
+: x= ( >>function -- )
+   ymin @
+   ` fx !
+   ymin @ translate-y ymax @ translate-y do
+      dup dup
+      fx @ exec swap plot
+      ystep @ f+
+   loop
+;
+
+: axis drop f 0.0 ;
