@@ -1,5 +1,5 @@
 ( Forthstrap graphing vocabulary )
-( Needs: gfx.forth float.forth )
+gfx.forth float.forth
 : graph.forth ;
 
 ( The variables required for a scalable graph )
@@ -17,20 +17,22 @@ f 10 xmax !
 f 10 f 0 swap f- ymin !
 f 10 ymax !
 
+( Translate a float to valid ROW-COLUMN coordinate )
 : translate-y
         height >>f ymax @ ymin @ f- swap f/ ystep !
         ystep @ f/ >>i ymax @ ystep @ f/ >>i swap -
 ;
-
 : translate-x
         width >>f xmax @ xmin @ f- swap f/ xstep !
         xstep @ f/ >>i xmin @ f 0 swap f- xstep @ f/ >>i +
 ;
 
+( Like pixel, but for scientific graphing )
 : plot ( fx fy -- ) 
    translate-y swap translate-x swap pixel
 ;
 
+( Functions to graph on X and Y axis accordingly )
 : y= ( >>function -- )
         xmin @
         ` fx !
@@ -40,7 +42,6 @@ f 10 ymax !
               xstep @ f+
         loop
 ;
-
 : x= ( >>function -- )
    ymin @
    ` fx !
@@ -51,4 +52,7 @@ f 10 ymax !
    loop
 ;
 
+( Some basic functions to graph )
 : axis drop f 0.0 ;
+: quadratic dup f* ;
+: linear ;

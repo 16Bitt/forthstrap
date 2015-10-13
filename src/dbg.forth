@@ -1,4 +1,5 @@
 ( Forthstrap debugging vocab )
+file.forth
 : dbg.forth ;
 
 variable DBG_TARGET

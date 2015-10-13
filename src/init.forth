@@ -1,5 +1,7 @@
 ( Forth init file )
 ( Put what you want loaded at runtime here )
+file.forth
+
 : init.forth ;
 
 cr
@@ -24,6 +26,12 @@ cr
 
 ." Loading debugging library... " cr
 " src/dbg.forth " load
+
+." Loading list library... " cr
+" src/list.forth " load
+
+." Loading advanced string handling library... " cr
+" src/strlib.forth " load
 
 ." Loading runtime settings... " cr
 " src/init1.forth " load

@@ -1,4 +1,5 @@
 ( Code to load files from disk )
+: load.forth ;
 
 variable codebuffer 2 allot
 here @ codebuffer ! 512 allot

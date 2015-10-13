@@ -67,6 +67,9 @@
 %: heap-init end-of-mem 512 + here ! %; %: , here @ ! here ws+! %;
 %: c, here @ c! here 1+! %;
 %: allot here @ + here ! %;
+%: object here @ %;
+%: ns ws 2 * %;
+%: bits ws 8 * %;
 
 \ ----------------------
 \ String vocabulary

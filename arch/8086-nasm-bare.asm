@@ -236,8 +236,20 @@ and_BEGIN:
 	push ax
 	jmp next
 
+xor_start:
+        dw and_start
+        db "xor", 0
+xor_CFA:
+        dw xor_BEGIN
+xor_BEGIN:
+        pop ax
+        pop bx
+        xor ax, bx
+        push ax
+        jmp next
+
 GT_start:
-	dw and_start
+	dw xor_start
 	db ">", 0
 GT_CFA:
 	dw GT_BEGIN
@@ -276,7 +288,7 @@ shl_CFA:
 shl_BEGIN:
 	pop cx
 	pop ax
-	shl ax, cl
+	rol ax, cl
 	push ax
 	jmp next
 
@@ -288,7 +300,7 @@ shr_CFA:
 shr_BEGIN:
 	pop cx
 	pop ax
-	shr ax, cl
+	ror ax, cl
 	push ax
 	jmp next
 
@@ -455,11 +467,11 @@ ROM_ADDR_TEXT:
 	db "~ "	;The first line is ignored
 	incbin "src/string.forth"
 	db " "
-	;incbin "src/disk.forth"
+	incbin "src/disk.forth"
 	db " "
-	;incbin "src/ed.forth"
+	incbin "src/ed.forth"
 	db " "
-	;incbin "src/load.forth"
+	incbin "src/load.forth"
 	db " 8 bs-val !"
 	db " keyecho is on"
 	db 0

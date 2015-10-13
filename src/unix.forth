@@ -1,5 +1,5 @@
 ( Forthstrap vocabulary for UNIX operations )
-( Needs: file.forth )
+file.forth
 : unix.forth ;
 
 : cat ( s1 s2 ... sn n )

@@ -2,8 +2,6 @@
 
 : list.forth ;
 
-: object here @ ;
-
 ( Create a list from an initial value )
 : list= ( head -- list ) object >r , 0 , r> ;
 
