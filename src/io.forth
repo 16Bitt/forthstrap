@@ -94,15 +94,13 @@
 		clear
 		65 buffer @ c!
 		2 position !
-		ok line
+		cr cr ok line
 		
-		3 spaces interp
+		interp
 		errorlevel @ %if
                         error
 			false errorlevel ! 
 		%then
-		cr
-		cr
 	%goto shell-loop
 %;
 

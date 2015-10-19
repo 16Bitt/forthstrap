@@ -53,16 +53,6 @@ current-block @ readblock
         loop
 ;
 
-: disk>> ( start -- )
-        511 swap 1 - do
-                disk i + .
-                disk i + c@ dup .
-                disk i 1+ + dup . cr c!
-        loop
-;
-
-: <<disk ;
-
 : explore
         begin
                 cr decorator

@@ -240,7 +240,6 @@
 %;
 
 %: create here @ last @ , last ! word strmov %;
-
 %C: does> ; [
 	here @ clast @ , clast ! 
 	last @ ws + strmov
@@ -248,6 +247,20 @@
 %; 
 
 %: variable create %lit enter , %lit lit , here @ 0 , %lit exit , here @ 0 , swap ! %;
+
+%: value 
+        create 
+        %lit enter , 
+        %lit lit , 
+        here @ 
+        0 , 
+        %lit exit , 
+        here @
+        rot , swap 
+        swap ! 
+%;
+
+%: constant create %lit enter , %lit lit , , %lit exit , %;
 %: : create [ %lit enter , %;
 %C: ;  %lit exit , ] %;
 %: cfa ws + dup strlen + 1 + %;
@@ -368,22 +381,52 @@
 %variable lastword
 
 %: forget
-        false lastword !
+        last lastword !
         word currentword !
         last @
         ~forget-loop
-             dup ws + currentword @ strcmp %if dup lastword @ swap ! %then
-             dup lastword !
+             dup ws + currentword @ strcmp
+             %if
+                dup @ lastword @ !
+             %else
+                dup lastword !
+             %then
              @ dup
         %goto-nz forget-loop drop
         
-        false lastword !
+        clast lastword !
         clast @
         ~forget-loop1
-             dup ws + currentword @ strcmp %if %then
-             dup lastword !
+             dup ws + currentword @ strcmp
+             %if
+                dup @ lastword @ !
+             %else
+                dup lastword !
+             %then
              @ dup
         %goto-nz forget-loop1 drop
+%;
+
+%variable forgotten?
+
+%: forget1
+        false forgotten? !
+
+        last lastword !
+        word currentword !
+        last @
+        ~forget1-loop
+             dup ws + currentword @ strcmp
+             %if
+                forgotten? @ not %if
+                        dup @ lastword @ !
+                        true forgotten? !
+                %then
+             %else
+                dup lastword !
+             %then
+             @ dup
+        %goto-nz forget1-loop drop
 %;
 
 \ --------------------------

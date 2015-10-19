@@ -33,5 +33,8 @@ cr
 ." Loading advanced string handling library... " cr
 " src/strlib.forth " load
 
+." Loading locals library... " cr
+" src/arg.forth " load
+
 ." Loading runtime settings... " cr
 " src/init1.forth " load

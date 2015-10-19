@@ -469,7 +469,7 @@ ROM_ADDR_TEXT:
 	db " "
 	incbin "src/disk.forth"
 	db " "
-	incbin "src/ed.forth"
+	incbin "src/explore.forth"
 	db " "
 	incbin "src/load.forth"
 	db " 8 bs-val !"

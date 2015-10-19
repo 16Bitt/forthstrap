@@ -13,7 +13,7 @@ variable [logroot]
 ;
 
 : ilog ( i -- )
-        h>>s logroot list+
+        i>>s logroot list+
 ;
 
 : .log
