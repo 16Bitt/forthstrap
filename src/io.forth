@@ -125,6 +125,8 @@
 	drop
 %;
 
+%: tab 9 emit %;
+
 %: list
 	last @
 	~list-loop
@@ -139,6 +141,10 @@
 		@ dup
 	%goto-nz list-loop2
 	drop
+%;
+
+%: used.
+        here @ end-of-mem - .
 %;
 
 %: ok

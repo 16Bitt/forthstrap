@@ -21,22 +21,33 @@ variable beginning
         loop
 ;
 
+variable argsize
+variable oldpos
+
+
 ( This word requires a few hacks... )
 : arguments:
+        argsize !
+
         ( Save position for later )
-        position @ >r
+        position @ oldpos !
 
         ( Create the words as above )
-        dup 0 do
+        argsize @ 0 do
                 variable
         loop
         
         ( Quick hack to put us back in execution for the current word )
         object beginning @ !
-        ( Restore Position so we can get all the arguments again )
-        r> position !
         
-        0 do
+        argsize @ 0 do
+                oldpos @ position !
+                argsize @ i 1+ = not if
+                        argsize @ i 1+ - 0 do
+                                word
+                        loop
+                then
+
                 ` ,
                 lit ! ,
         loop
@@ -52,3 +63,6 @@ variable beginning
                 forget1
         loop
 ;
+
+( Hide some junk variables )
+2 finished: argsize oldpos

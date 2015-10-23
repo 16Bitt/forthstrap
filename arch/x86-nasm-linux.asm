@@ -460,5 +460,6 @@ code_start:
 c_var_loc:
 	times 8 dd 0
 
+;4 MB heap
 end_of_forth:
-times 4096 * 8 db 0
+times 1024 * 1024 * 4 db 0

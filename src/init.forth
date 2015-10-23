@@ -9,6 +9,9 @@ cr
 ." Loading init settings... " cr
 " src/init0.forth " load
 
+." Loading logic library... " cr
+" src/logic.forth " load
+
 ." Loading floating point library... " cr
 " src/float.forth " load
 
@@ -35,6 +38,12 @@ cr
 
 ." Loading locals library... " cr
 " src/arg.forth " load
+
+." Loading Terminal compatibility library... " cr
+" src/term.forth " load
+
+." Loading memory definitions... " cr
+" src/memory.forth " load
 
 ." Loading runtime settings... " cr
 " src/init1.forth " load

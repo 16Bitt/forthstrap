@@ -20,7 +20,7 @@ variable strp
   drop
 ;
 
-1024 4 * string-init
+1024 8 * string-init
 
 ( Forthstrap uses strings beginning and ending a space delimited " )
 : "

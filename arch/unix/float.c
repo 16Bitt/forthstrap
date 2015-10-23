@@ -63,3 +63,18 @@ int csin(float f){
 int ccos(float f){
 	return float_to_int(cos(f));
 }
+
+//F csqrt sqrt 1 1
+int csqrt(float f){
+	return float_to_int(sqrtf(f));
+}
+
+//F flt flt 2 1
+int flt(float f1, float f2){
+	return f1 < f2;
+}
+
+//F fgt fgt 2 1
+int fgt(float f1, float f2){
+	return f1 > f2;
+}

@@ -15,6 +15,8 @@
 : f/ fdiv ;
 : .f fdot ;
 : >>f fcast ;
+: f< flt ;
+: f> fgt ;
 
 ( Some math words )
 : f^2 ( f -- f^2 ) dup f* ;
