@@ -1,5 +1,5 @@
 ( Forthstrap editor -- Austin Bittinger 10/23/15 )
-memory.forth file.forth
+file.forth
 : editor.forth ;
 
 
@@ -7,34 +7,72 @@ memory.forth file.forth
 
 
                 ( Constants and variables )
+( A list of lines )
+" " list= value [lines]
+: lines [lines] @ ;
 
-( How big the scratchpad should be )
-4 kilobytes constant small
-8 kilobytes constant medium
-16 kilobytes constant large
+( The name of the file that we're editing )
+" " value editing
 
-( Create our scratchpad )
-object medium allot value scratch
+( Make our buffer for loading the file )
+variable scratch
 
-
-
-
-
-                ( Data structures )
 
 
 
 
 
                 ( Helper functions )
+: openToEdit ( filename -- ) 
+       dup editing !
+       file-read scratch !
+       scratch @ >r
+       begin
+                char . emit
+                scratch @ c@ dup
+                not     if drop r> lines list+ exit then
+                10 =    if 0 scratch @ c! r> lines list+ scratch @ 1+ >r then
+                scratch 1+!
+       again cr
+;
+
+: disp ( start end -- ) 
+        cr
+        1+ swap do
+                i lines list@ dup if @ i .16 space .s cr else drop then
+        loop
+;
+
+: esize ( -- newfilesize )
+        0
+        list| 0 do
+                i lines list@ @ strlen +
+        loop
+;
+
+
 
 
 
 
                 ( Primary vocabulary )
+: edit ( >>word -- ) ` exec openToEdit ;
+: change ( lineno -- ) ;
+: insert ( lineno -- ) ;
+: remove ( lineno -- ) ;
+: show ( line len -- )
+        2dup + swap drop disp
+;
 
-
+: save ( -- ) ;
 
 
 
                 ( Cleanup )
+forget editing
+forget [lines]
+forget lines
+forget openToEdit
+forget disp
+forget esize
+forget scratch

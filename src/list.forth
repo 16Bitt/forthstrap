@@ -30,8 +30,8 @@
 ( Get a cell from an index in a list )
 : list@ ( index list -- cell )
        swap dup not if drop exit then
-       0 do 
-                ws + @
+       0 do
+                dup if ws + @ then
        loop
 ;
 

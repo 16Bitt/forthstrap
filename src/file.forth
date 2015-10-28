@@ -7,7 +7,7 @@
 
 : file-read ( filename -- buffer )
         dup filesize
-        here @ swap allot swap
+        here @ swap 1+ allot swap
         2dup readbuff
         drop
 ;
