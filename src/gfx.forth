@@ -24,5 +24,3 @@
    >r + swap 1+ swap r> vertical
 ;
 
-: l " src/gfx.forth " load ;
-: t 120 200 32 128 rect ;

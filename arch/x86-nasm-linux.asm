@@ -425,9 +425,56 @@ ROM_ADDR_BEGIN:
 	push dword code_start
 	jmp next
 
+rAT_start:
+        dd ROM_ADDR_start
+        db "r@", 0
+rAT_CFA:
+        dd rAT_BEGIN
+rAT_BEGIN:
+        push ebp
+        jmp next
+
+rEXC_start:
+        dd rAT_start
+        db "r!", 0
+rEXC_CFA:
+        dd rEXC_BEGIN
+rEXC_BEGIN:
+        pop ebp
+        jmp next
+
+spAT_start:
+        dd rEXC_start
+        db "sp@", 0
+spAT_CFA:
+        dd spAT_BEGIN
+spAT_BEGIN:
+        push esp
+        jmp next
+
+spEXC_start:
+        dd spAT_start
+        db "sp!", 0
+spEXC_CFA:
+        dd spEXC_BEGIN
+spEXC_BEGIN:
+        pop esp
+        jmp next
+
+bnot_start:
+        dd spEXC_start
+        db "bnot", 0
+bnot_CFA:
+        dd bnot_BEGIN
+bnot_BEGIN:
+        pop eax
+        not eax
+        push eax
+        jmp next
+
 ;ws ( -- word-size)
 ws_start:
-	dd ROM_ADDR_start
+	dd bnot_start
 	db "ws", 0
 ws_CFA:
 	dd ws_BEGIN

@@ -20,3 +20,5 @@ variable W variable X variable Y variable Z variable T
 19 X !
 h 500 Y !
 h FFF Z !
+
+forget W forget X forget Y forget Z forget T

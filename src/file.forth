@@ -20,8 +20,6 @@
         filesize if true else false then
 ;
 
-: d dup . cr ;
-
 : load ( filename -- )
         dup file-exists? not if drop exit then
         here @ char A c, 32 c,

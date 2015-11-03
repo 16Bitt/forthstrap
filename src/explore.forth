@@ -65,3 +65,12 @@ current-block @ readblock
                 char q = if exit then
         again
 ;
+
+        ( Clean up )
+forget .cr
+forget show
+forget get-cr
+forget p+
+forget p-
+forget current-block
+forget cr-index

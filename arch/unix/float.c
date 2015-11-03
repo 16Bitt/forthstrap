@@ -54,18 +54,18 @@ int icast(float f){
    return (int) f;
 }
 
-//F csin sin 1 1
-int csin(float f){
+//F c_sin sin 1 1
+int c_sin(float f){
 	return float_to_int(sin(f));
 }
 
-//F ccos cos 1 1
-int ccos(float f){
+//F c_cos cos 1 1
+int c_cos(float f){
 	return float_to_int(cos(f));
 }
 
-//F csqrt sqrt 1 1
-int csqrt(float f){
+//F c_sqrt sqrt 1 1
+int c_sqrt(float f){
 	return float_to_int(sqrtf(f));
 }
 

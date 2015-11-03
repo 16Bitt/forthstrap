@@ -28,3 +28,5 @@ variable codesize 512 codesize !
 
         position ! buffer-length ! buffer !
 ;
+
+forget codesize forget codebuffer

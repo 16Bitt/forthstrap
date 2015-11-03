@@ -56,3 +56,5 @@ f 10 ymax !
 : axis drop f 0.0 ;
 : quadratic dup f* ;
 : linear ;
+
+forget xstep forget ystep forget fx

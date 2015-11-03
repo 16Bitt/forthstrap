@@ -87,3 +87,7 @@ variable strp
         loop
         drop drop
 ;
+
+: |here| here @ ws 1 - bnot and ws + here ! ;
+
+forget strp

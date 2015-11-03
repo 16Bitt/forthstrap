@@ -25,7 +25,7 @@ unsigned int filesize(char* filename){
 //F readbuff readbuff 2 0
 void readbuff(void* buffer, char* filename){
 	unsigned int sz = filesize(filename);
-	if(sz == NULL)
+	if(sz == 0)
 		return;
 
 	FILE* f = fopen(filename, "rb");

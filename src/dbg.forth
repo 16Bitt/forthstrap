@@ -17,3 +17,5 @@ variable DBG_TARGET
 : targetting
    ` exec DBG_TARGET !
 ;
+
+forget DBG_TARGET

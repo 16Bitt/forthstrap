@@ -28,3 +28,5 @@
 ;
 
 : >>i icast ;
+
+: tan dup sin swap cos f/ ;
