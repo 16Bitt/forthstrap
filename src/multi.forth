@@ -15,8 +15,8 @@ list.forth
 ( Our accessor for the list )
 : processes [processes] @ ;
 ( The size of our stacks )
-32 cells constant ds-size
-32 cells constant rs-size
+128 cells constant ds-size
+128 cells constant rs-size
 4 cells constant proc-size
 
 
@@ -42,7 +42,14 @@ list.forth
 
 
 ( Jump to this handler on spawn )
-: multi-start r> drop ;
+: first-yield ( -- )
+        cr ." Beginning pid " process @ .
+        cr ." If this value is not 1, panic! "
+        cr ." SP will be " process @ proc.sp @ dup . sp!
+        cr ." RP will be " process @ proc.rsp @ dup . r! 
+        
+        cr ." Cross your fingers "
+;
 
 
 
@@ -53,15 +60,15 @@ list.forth
 
 ( Give control to the next process )
 : yield ( -- )
-        cr ." Yielding "
+        cr ." Yielding from pid " pid .
         sp@ process @ proc.sp !
-        r@ process @ proc.sp !
+        r@ process @ proc.rsp !
         process 1+!
         process @ processes list@ dup not if
                 1 process !
         then
-        process @ proc.sp @ dup . sp!
-        process @ proc.rsp @ dup . r! 
+        cr ." SP will be " process @ proc.sp @ dup . sp!
+        cr ." RP will be " process @ proc.rsp @ dup . r! 
         
         cr ." Cross your fingers "
 ;
@@ -71,12 +78,17 @@ list.forth
         
         cr ." Added proc to list "
 
-        processes list| 1 - process ! process @ .
-        object ds-size allot ds-size + ws - process @ proc.sp !
-        object rs-size allot process @ proc.rsp !
+        processes list| 1 - process !
+        |here| object ds-size allot ds-size + ws - process @ proc.sp !
+        |here| object rs-size allot process @ proc.rsp !
         ` process @ proc.rsp @ ws - !
         
-        yield
+        pid 1 = if
+            cr ." First task spawn "
+            first-yield
+        else
+            yield
+        then
 ;
 
 : end
@@ -88,6 +100,5 @@ list.forth
         process list-
 ;
 
-safety
-: mt yield ;
-spawn mt
+( Set up a testing environment )
+safety : mt yield ;

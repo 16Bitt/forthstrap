@@ -425,6 +425,11 @@ ROM_ADDR_BEGIN:
 	push dword code_start
 	jmp next
 
+
+
+
+;Extensions needed for multitasking
+
 rAT_start:
         dd ROM_ADDR_start
         db "r@", 0
