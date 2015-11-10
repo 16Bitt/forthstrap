@@ -10,6 +10,8 @@ variable ymax
 variable ystep
 variable xstep
 variable fx
+variable lastx
+variable lasty
 
 ( Our defaults )
 f 10 f 0 swap f- xmin !
@@ -29,19 +31,29 @@ f 10 ymax !
 
 ( Like pixel, but for scientific graphing )
 : plot ( fx fy -- ) 
-   translate-y swap translate-x swap pixel
+   translate-y swap translate-x swap 2dup pixel lasty ! lastx !
 ;
 
 ( Functions to graph on X and Y axis accordingly )
 : y= ( >>function -- )
+        { 2 locals: lxclone lyclone }
         xmin @
         ` fx !
-        xmax @ translate-x xmin @ translate-x do
+        xmax @ translate-x xmin @ translate-x dup lastx ! do
               dup dup
-              fx @ exec plot
+              lastx @ lxclone ! lasty @ lyclone !
+              fx @ exec 2dup plot
+              2dup drop xmin @ f= not if
+                        translate-y swap translate-x swap
+                        lxclone @ lyclone @ drawline
+              else
+                        drop drop
+              then
               xstep @ f+
         loop
+        { 2 finished: lxclone lyclone }
 ;
+
 : x= ( >>function -- )
    ymin @
    ` fx !
@@ -57,4 +69,4 @@ f 10 ymax !
 : quadratic dup f* ;
 : linear ;
 
-forget xstep forget ystep forget fx
+forget xstep forget ystep forget fx forget lastx forget lasty

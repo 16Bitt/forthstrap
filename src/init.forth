@@ -12,6 +12,9 @@ cr
 ." Loading logic library... " cr
 " src/logic.forth " load
 
+." Loading locals library... " cr
+" src/arg.forth " load
+
 ." Loading floating point library... " cr
 " src/float.forth " load
 
@@ -35,9 +38,6 @@ cr
 
 ." Loading advanced string handling library... " cr
 " src/strlib.forth " load
-
-." Loading locals library... " cr
-" src/arg.forth " load
 
 ." Loading Terminal compatibility library... " cr
 " src/term.forth " load

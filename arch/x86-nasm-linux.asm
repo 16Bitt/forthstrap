@@ -191,10 +191,13 @@ SLASH_CFA:
 SLASH_BEGIN:
 	pop ebx
 	pop eax
-	xor edx, edx
+        cmp eax, 0
+        jl isnegative
+        xor edx, edx
+SLASH_continue:
 	or ebx, ebx
 	jz baddiv
-	div ebx
+	idiv ebx
 	push eax
 	jmp next
 
@@ -212,6 +215,10 @@ rem_BEGIN:
 	div ebx
 	push edx
 	jmp next
+
+isnegative:
+        mov edx, -1
+        jmp SLASH_continue
 
 baddiv:
 	push dword 0

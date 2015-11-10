@@ -17,6 +17,7 @@
 : >>f fcast ;
 : f< flt ;
 : f> fgt ;
+: f= feq ;
 
 ( Some math words )
 : f^2 ( f -- f^2 ) dup f* ;
