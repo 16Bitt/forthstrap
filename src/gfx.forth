@@ -32,7 +32,7 @@
                 4 arguments:    x1 y1 x2 y2 
                 5 locals:       dx dy err derr y
         }
-
+        
         ( Make sure our points are ordered )
         x1 @ x2 @ > if
                 x1 @ x2 @ x1 ! x2 !
@@ -41,8 +41,9 @@
         
         ( Account for vertical lines )
         x1 @ x2 @ = if
-                y1 @ y2 @ - abs
-                x1 @ x2 @ vertical
+                cr ." VERTICAL "
+                ( y1 @ y2 @ - abs
+                x1 @ x2 @ vertical )
                 exit
         then
 
@@ -52,6 +53,10 @@
         err 0!
         dy @ dx @ / abs derr !
         y1 @ y !
+
+        derr @ 100 > if
+                exit
+        then
 
         ( Our loop to draw... )
         x2 @ x1 @ do

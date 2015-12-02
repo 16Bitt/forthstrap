@@ -2,6 +2,7 @@
 #include "X11/Xutil.h"
 #include "stdlib.h"
 #include "string.h"
+#include "stdio.h"
 
 Display* disp;
 Window win;
@@ -11,8 +12,13 @@ int screen;
 
 unsigned long int fg;
 unsigned long int bg;
+unsigned long int red;
+unsigned long int blue;
 
 char* title = "Forth GFX Interface";
+
+Colormap cm;
+XColor* colors;
 
 //F gfx_init gfx 0 0
 void gfx_init(){
@@ -21,6 +27,21 @@ void gfx_init(){
 	screen = DefaultScreen(disp);
 	fg = WhitePixel(disp, screen);
 	bg = BlackPixel(disp, screen);
+	
+	cm = DefaultColormap(disp, DefaultScreen(disp));
+	colors = (XColor*) malloc(sizeof(XColor) * 8);
+	
+	int err = 0;
+	err = XAllocNamedColor(disp, cm, "white", &colors[0], &colors[0]);
+	err += XAllocNamedColor(disp, cm, "black", &colors[1], &colors[1]);
+	err += XAllocNamedColor(disp, cm, "red", &colors[2], &colors[2]);
+	err += XAllocNamedColor(disp, cm, "blue", &colors[3], &colors[3]);
+	err += XAllocNamedColor(disp, cm, "green", &colors[4], &colors[4]);
+	
+	if(err == 0){
+		puts("Failed to allocate color!!!");
+		exit(-1);
+	}
 
 	//Register our window with default properties
 	win = XCreateSimpleWindow(disp, DefaultRootWindow(disp), \
@@ -66,4 +87,10 @@ int width(){
 //F height height 0 1
 int height(){
    return 480;
+}
+
+//F setcolor color 1 0
+void setcolor(int x){
+	XSetForeground(disp, context, colors[x].pixel);
+	repaint();
 }

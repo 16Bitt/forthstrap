@@ -83,3 +83,18 @@ int fgt(float f1, float f2){
 int feq(float f1, float f2){
 	return abs(f1 - f2) < 0.00001;
 }
+
+//F farctan invtan 1 1
+int farctan(float f){
+        return float_to_int(atan(f));
+}
+
+//F farcsin invsin 1 1
+int farcsin(float f){
+        return float_to_int(asin(f));
+}
+
+//F farccos invcos 1 1
+int farccos(float f){
+        return float_to_int(acos(f));
+}

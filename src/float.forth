@@ -31,3 +31,8 @@
 : >>i icast ;
 
 : tan dup sin swap cos f/ ;
+: fnegate f -1 f* ;
+: |f| dup f 0 f< if fnegate then ;
+
+( Rough approximation of pi, should mostly work )
+f 3.1415926 constant pi
