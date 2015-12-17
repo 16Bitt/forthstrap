@@ -1,104 +1,97 @@
-( Forthstrap multitasking library )
-( Requires: list.forth r@ r! s@ s! )
-list.forth
+( Forth multitasking library )
+( Austin Bittinger -- December 2, 2015 )
+object.forth
 : multi.forth ;
 
 
 
 
-                ( Variables and constants )
+( Variables )
+variable pid
+variable running
+variable [processes]
+variable process
 
-( Our current process )
-1 value process
-( Our list of processes )
-0 list= value [processes]
-( Our accessor for the list )
+structure
+        .Stack
+        .RStack
+        .SP
+        .RSP
+        .PID
+named Process
+
 : processes [processes] @ ;
-( The size of our stacks )
-128 cells constant ds-size
-128 cells constant rs-size
-4 cells constant proc-size
 
 
 
 
-
-                ( Internal vocabulary )
-
-( Fire up the scheduler )
-: multi-init
-        object proc-size allot list= [processes] !
-        0 processes list@ !
-        0 processes list@ @ dup dup dup dup
-        object rs-size allot swap !
-        object ds-size allot swap 1 cells + !
-        object ws allot swap 2 cells + ! ( sp )
-        object ws allot swap 3 cells + ! ( rsp )
+( Helper functions )
+: mkproc
+        Process process !
+        process dup processes list+
+        dup pid @ swap .PID !
+        pid 1+!
 ;
 
-( Make accessing attributes from our process list easier )
-: proc.sp processes list@ @ 2 cells + ;
-: proc.rsp processes list@ @ 3 cells + ;
-
-
-( Jump to this handler on spawn )
-: first-yield ( -- )
-        cr ." Beginning pid " process @ .
-        cr ." If this value is not 1, panic! "
-        cr ." SP will be " process @ proc.sp @ dup . sp!
-        cr ." RP will be " process @ proc.rsp @ dup . r! 
+: >>proc
+        running 1+!
         
-        cr ." Cross your fingers "
-;
-
-
-
-
-                ( Outward vocabulary )
-
-: pid ( -- pid ) process @ ;
-
-( Give control to the next process )
-: yield ( -- )
-        cr ." Yielding from pid " pid .
-        sp@ process @ proc.sp !
-        r@ process @ proc.rsp !
-        process 1+!
-        process @ processes list@ dup not if
-                1 process !
+        running @ processes list| =
+        running @ processes list| > or if
+                running 0!
         then
-        cr ." SP will be " process @ proc.sp @ dup . sp!
-        cr ." RP will be " process @ proc.rsp @ dup . r! 
         
-        cr ." Cross your fingers "
+        processes running @ list@ @ process !
 ;
 
-: spawn       
-        object proc-size allot processes list+
-        
-        cr ." Added proc to list "
-
-        processes list| 1 - process !
-        |here| object ds-size allot ds-size + ws - process @ proc.sp !
-        |here| object rs-size allot process @ proc.rsp !
-        ` process @ proc.rsp @ ws - !
-        
-        pid 1 = if
-            cr ." First task spawn "
-            first-yield
-        else
-            yield
-        then
+( Main Program )
+: yield
+        >>proc
+        process .RSP @ r!
+        process .SP @ sp!
 ;
 
-: end
-        pid process list-
+: spawn
+        ( Create and allot a new process )
+        process @
+        cr ." Making process... "
+        mkproc process !
+        cr ." Allotting... "
+        object 1 kilobytes allot process .RStack !
+        object 1 kilobytes allot process .Stack !
+        
+        ( Setup the return stack and a call to it )
+        cr ." Setting the stacks... "
+        process .RStack @ process .RSP !
+        ` process .RStack dup . cr @ ws - dup . cr !
+        ( Setup the default stack )
+        process .Stack @ 1 kilobytes + ws - process .SP !
+        process !
+
+        cr ." Spawn done. "
+;
+
+: kill ;
+: getpid process .PID @ ;
+
+: multi 
+        cr ." Making startup list... "
+        0 list= [processes] !
+        cr ." Spawning process... "
+        spawn
+        cr ." Resetting processes... "
+        1 processes list@ [processes] !
         yield
 ;
 
-: kill
-        process list-
-;
+( Cleanup )
+forget pid
+forget running
+forget [processes]
+forget process
 
-( Set up a testing environment )
-safety : mt yield ;
+
+
+
+( Testing )
+: mt begin yield again ;

@@ -1,4 +1,5 @@
 ( forthstrap FAT disk interface )
+cr ." Loading FAT disk interface "
 
 variable diskbuffer 
 here @ diskbuffer ! 516 allot

@@ -90,4 +90,8 @@ variable strp
 
 : |here| here @ ws 1 - bnot and ws + here ! ;
 
+cr ." string.forth loaded. "
+
 forget strp
+
+

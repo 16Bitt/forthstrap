@@ -4,3 +4,4 @@
 : >>boolean not not ;
 : && >>boolean swap >>boolean and ;
 : ^^ >>boolean swap >>boolean xor ;
+: || >>boolean swap >>boolean or ;

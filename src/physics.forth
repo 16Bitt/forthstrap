@@ -10,7 +10,6 @@
 list.forth gfx.forth float.forth arg.forth logic.forth
 
 ( This library provides a simple way to log numbers and strings )
-" src/logger.forth " load
 
 
 
@@ -53,9 +52,9 @@ object1 !
 object
 ( Mass )                f 0.01 ,
 ( Theta,0 )             pi f 14 f/ ,
-( Radius )              f 0.009 ,
+( Radius )              f 0.02 ,
 ( Direction )           f 1.0 ,
-( Amplitude )           f 0.1 fnegate ,
+( Amplitude )           f 0.2 fnegate ,
 ( Offset )              f 0.0 ,
 object2 !
 
@@ -149,7 +148,7 @@ object2 !
 : ->Velocity-Component
         { 1 arguments: obj }
         
-        obj @ ->Velocity-X f^2
+        obj @ ->Velocity f^2
         obj @ ->Velocity-Y f^2 f+
         sqrt
 

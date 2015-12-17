@@ -346,10 +346,9 @@
 
 %: i 
 	depth @ 1 < %if
-		InvalidDepth errorlevel !
-	%else
-		r> r> r> 3dup >r >r >r swap drop swap drop 
+		\ Error here?
 	%then
+        r> r> r> 3dup >r >r >r swap drop swap drop 
 %;
 
 %C: do %lit depth , %lit 1+! , %lit >r , %lit >r , here @ >p %;

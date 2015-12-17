@@ -1,3 +1,6 @@
+( Block explorer -- Austin Bittinger )
+cr ." Loading block explorer... "
+
 variable current-block
 770 current-block !
 variable cr-index

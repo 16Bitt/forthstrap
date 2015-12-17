@@ -446,9 +446,20 @@ diskwrite_CFA:
 diskwrite_BEGIN:
 	jmp next
 
+bnot_start:
+	dw diskwrite_start
+	db "bnot", 0
+bnot_CFA:
+	dw bnot_BEGIN
+bnot_BEGIN:
+	pop ax
+	not ax
+	push ax
+	jmp next
+
 ;ws ( -- word-size)
 ws_start:
-	dw diskwrite_start
+	dw bnot_start
 	db "ws", 0
 ws_CFA:
 	dw ws_BEGIN

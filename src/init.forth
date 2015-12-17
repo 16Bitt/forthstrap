@@ -45,5 +45,14 @@ cr
 ." Loading memory definitions... " cr
 " src/memory.forth " load
 
+." Loading compiler library... " cr
+" src/compile.forth " load
+
+." Loading syntax extensions... " cr
+" src/syntax.forth " load
+
+." Loading object library... " cr
+" src/object.forth " load
+
 ." Loading runtime settings... " cr
 " src/init1.forth " load

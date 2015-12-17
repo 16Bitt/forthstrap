@@ -311,8 +311,20 @@ and_BEGIN:
 	push eax
 	jmp next
 
-xor_start:
+or_start:
         dd and_start
+        db "or", 0
+or_CFA:
+        dd or_BEGIN
+or_BEGIN:
+        pop eax
+        pop ebx
+        or eax, ebx
+        push eax
+        jmp next
+
+xor_start:
+        dd or_start
         db "xor", 0
 xor_CFA:
         dd xor_BEGIN
