@@ -1,5 +1,4 @@
 ( Block explorer -- Austin Bittinger )
-cr ." Loading block explorer... "
 
 variable current-block
 770 current-block !
@@ -56,16 +55,32 @@ current-block @ readblock
         loop
 ;
 
+: numkey? char 0 1- char 9 1+ within? ;
+: how-many?
+        ." How many blocks would you like to load? "
+        begin
+                key dup
+                numkey? if dup emit char 0 - exit then      
+                drop
+        again
+;
+
 : explore
         begin
                 cr decorator
                 cr ." At block " current-block @ .
                 0 18 show
                 decorator
-                ." Use L and H to navigate forward and backward. q to quit. " cr
-                key dup char l = if p+ then
-                dup char h = if p- then
-                char q = if exit then
+                ." Use L and H to navigate forward and backward, x to exec, q to quit. " cr
+                key case
+                        char h of drop p- endof
+                        char l of drop p+ endof
+                        char q of drop exit endof
+                        char x of 
+                                drop current-block @ how-many? load
+                        endof
+                        drop
+                endcase
         again
 ;
 

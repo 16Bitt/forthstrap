@@ -1,8 +1,8 @@
 	[bits 16]
-	[org 0x8800]
-
+	[org 0x0]
+	
 forth_start:
-	xor ax, ax
+	mov ax, cs
 	mov es, ax
 	mov ds, ax
 	mov ss, ax
@@ -477,13 +477,17 @@ hello_str: db "hello, world", 0
 ROM_ADDR_TEXT:
 	db "~ "	;The first line is ignored
 	incbin "src/string.forth"
-	db " "
+	db " @echo is on "
 	incbin "src/disk.forth"
 	db " "
-	incbin "src/explore.forth"
-	db " "
 	incbin "src/load.forth"
+	db " "
+        incbin "src/nofs.forth"
+        db " "
+	incbin "nofstab.forth"
 	db " 8 bs-val !"
+	db " fda diskinfo"
 	db " keyecho is on"
+	db " @echo is off"
 	db 0
 end_of_forth:

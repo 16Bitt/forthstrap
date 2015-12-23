@@ -17,7 +17,7 @@ variable codesize 512 codesize !
                 disk codebuffer @ 512 i * + 512 memmov
         loop drop
 
-        buffer @ buffer-length @ position @
+        found @ buffer @ buffer-length @ position @ >r >r >r >r
 
         @echo is on
         codebuffer @ 2 - buffer !
@@ -26,7 +26,7 @@ variable codesize 512 codesize !
         interp
         @echo is off
 
-        position ! buffer-length ! buffer !
+        r> r> r> r> position ! buffer-length ! buffer ! found !
 ;
 
 forget codesize forget codebuffer

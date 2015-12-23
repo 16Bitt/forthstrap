@@ -11,7 +11,9 @@ linux: bootstrap unix_runtime
 	mv arch/boot.bin .
 	-/sbin/mkdosfs -F 12 -s 2 -C floppy.img 1440
 	dd conv=notrunc if=boot.bin of=floppy.img bs=1 seek=64 count=448
+	bin/nofs.rb src/* > nofstab.forth
 	nasm -fbin arch/8086-nasm-bare.asm -o 8086.bin
+	-rm nofstab.forth
 	mcopy -o -i floppy.img 8086.bin ::/PAYLOAD.SYS
 	bin/mkdisk.sh
 	dd if=raw_img.bin of=floppy.img conv=notrunc bs=512 seek=770

@@ -3,8 +3,8 @@ load.forth
 : nofs.forth ;
 
 : s>>f
-        find dup not if exit then
-        cfa
+        find dup not if ." NOFS file not found " exit then
+        cfa exec
 ;
 
 ` load

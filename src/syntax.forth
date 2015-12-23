@@ -16,6 +16,15 @@ variable cases
         here @ >p 0 ,
 ;
 
+: "of" does>
+        cases 1+!
+        metacompile
+                over strcmp jz
+        done
+
+        here @ >p 0 ,
+;
+
 : endof does>
         p>
         metacompile

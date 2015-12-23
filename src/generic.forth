@@ -41,6 +41,7 @@
 
 \ Common words
 %: 1+ 1 + %;
+%: 1- 1 - %;
 %: 1+! dup @ 1 + swap ! %;
 %: 2+! dup @ 2 + swap ! %;
 %: ws+! dup @ ws + swap ! %;

@@ -524,7 +524,7 @@ code_start:
 	db " "
    incbin "src/file.forth"
    db " "
-   incbin "src/init.forth"
+   db " word src/init.forth load "
    db " "
    db 0
 
