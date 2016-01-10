@@ -22,33 +22,40 @@ named Process
 
 : processes [processes] @ ;
 
-
-
+1 kilobytes constant multisize
+true constant stackgrowsdown?
 
 ( Helper functions )
 : mkproc
         Process process !
-        process dup processes list+
-        dup pid @ swap .PID !
+        process @ processes list+
+        pid @ process .PID !
         pid 1+!
+        process @
 ;
 
 : >>proc
         running 1+!
         
+        cr ." Checking for proc overflow "
         running @ processes list| =
         running @ processes list| > or if
                 running 0!
         then
         
-        processes running @ list@ @ process !
+        cr ." Changing proc " running @ .
+        running @ processes list@ @ process !
+        cr ." Swapping to proc " process .PID @ .
 ;
 
 ( Main Program )
 : yield
+        cr ." Switching proc "
         >>proc
-        process .RSP @ r!
-        process .SP @ sp!
+        cr ." Setting RSP "
+        process .RSP @ dup . r!
+        cr ." Setting SP "
+        process .SP @ dup . sp!
 ;
 
 : spawn
@@ -57,15 +64,21 @@ named Process
         cr ." Making process... "
         mkproc process !
         cr ." Allotting... "
-        object 1 kilobytes allot process .RStack !
-        object 1 kilobytes allot process .Stack !
-        
+        object multisize allot process .RStack !
+        object multisize allot process .Stack !
+
         ( Setup the return stack and a call to it )
         cr ." Setting the stacks... "
         process .RStack @ process .RSP !
-        ` process .RStack dup . cr @ ws - dup . cr !
+        ` process .RStack @ !
+
         ( Setup the default stack )
-        process .Stack @ 1 kilobytes + ws - process .SP !
+        stackgrowsdown? if
+                process .Stack @ multisize + ws - dup . cr process .SP !
+        else
+                process .Stack @ process .SP !
+        then
+        
         process !
 
         cr ." Spawn done. "
@@ -94,4 +107,4 @@ forget process
 
 
 ( Testing )
-: mt begin yield again ;
+: mt begin yield cr ." Yielded :) " again ;

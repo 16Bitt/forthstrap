@@ -49,6 +49,7 @@
 %: 2-! dup @ 2 - swap ! %;
 %: ws-! dup @ ws - swap ! %;
 %: 0! 0 swap ! %;
+%: 0= 0 = %;
 %: true 1 %;
 %: false 0 %;
 %: not %if false %else true %then %;
@@ -89,19 +90,14 @@
 	str-length @
 %;
 
-%variable strcmp-count
-%: strcmp 2dup strlen swap strlen
-	= not %if drop drop false exit %then
-	dup strlen strcmp-count !
+%: strcmp
 	~strcmp-loop
+                2dup
+                c@ swap c@ + not %if drop drop true exit %then
 		2dup
 		c@ swap c@ = not %if drop drop false exit %then
 		1 + swap 1 +
-		strcmp-count 1-!
-		strcmp-count @
-	%goto-nz strcmp-loop
-	drop drop
-	true
+	%goto strcmp-loop
 %;
 
 %: strmov
@@ -146,6 +142,18 @@
 %variable buffer
 %variable buffer-length
 %variable position
+
+\ Evaluate a string AS THE INTERPRETER EXPECTS, shorthand
+%: evaluate 
+        position @ buffer @ buffer-length @ found @ >r >r >r >r
+        
+        dup strlen buffer-length ! buffer !
+        position 0!
+        position 1-!
+        interp
+
+        r> r> r> r> found ! buffer-length ! buffer ! position !
+%;
 
 \ Clear the buffer and replace spaces and newlines with 0
 %: prepare
