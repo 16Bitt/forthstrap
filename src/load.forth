@@ -26,6 +26,13 @@ variable codesize 512 codesize !
         interp
         @echo is off
 
+        errorlevel @ if
+                cr cr cr
+                ." Compilation got an error: " error cr
+                ." In word: " current-word-compiling @ .s
+                cr cr cr
+        then
+
         r> r> r> r> position ! buffer-length ! buffer ! found !
 ;
 

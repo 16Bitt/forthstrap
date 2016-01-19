@@ -517,8 +517,7 @@ hello_str: db "hello, world", 0
 %include "arch/unix/unix.asm"
 
 code_start:
-	db "A "
-	db " 127 bs-val !"
+	db "127 bs-val !"
 	db " "
    incbin "src/string.forth"
 	db " "

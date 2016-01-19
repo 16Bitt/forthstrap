@@ -22,8 +22,7 @@
 
 : load ( filename -- )
         dup file-exists? not if drop exit then
-        here @ char A c, 32 c,
-        swap file-read drop
+        file-read
         
         ( Save interpreter state )
         found @ buffer @ buffer-length @ position @ >r  >r >r >r

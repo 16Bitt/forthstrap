@@ -3,8 +3,7 @@
 
 %: payload
 	init
-   
-   on keyecho !
+        on keyecho !
 
 	position 0!
 	ROM_ADDR buffer !

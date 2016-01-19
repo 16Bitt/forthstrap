@@ -56,11 +56,15 @@
 %: line
 	~line-loop
 		key dup 
-		dup 13 = %if drop drop cr 
-		exit %then
+		
+                dup 13 = %if
+                        drop drop cr 
+		        exit
+                %then
+
 		bkspc = %if
 			drop
-			position @ 2 > %if
+			position @ 0 > %if
 				0 buffer @ position @ + c!
 				position 1-!
 				0 buffer @ position @ + c!
@@ -92,8 +96,7 @@
 	dup allot buffer-length !
         ~shell-loop
 		clear
-		65 buffer @ c!
-		2 position !
+		position 0!
 		cr cr ok line
 		
 		interp

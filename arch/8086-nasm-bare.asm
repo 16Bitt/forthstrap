@@ -475,7 +475,7 @@ hello_str: db "hello, world", 0
 
 ;This is an example of how to pack code into the binary
 ROM_ADDR_TEXT:
-	db "~ "	;The first line is ignored
+	;db "~ "	;The first line is ignored
 	incbin "src/string.forth"
 	db " @echo is on "
 	incbin "src/disk.forth"

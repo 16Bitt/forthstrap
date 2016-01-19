@@ -181,8 +181,32 @@
 	position !
 %;
 
+%variable started
+
 \ Get a word from the buffer
 %: word
+        position @ 0= started @ and %if
+                false started !
+                position 1-!
+                ~word-loop-initial
+                        position 1+!
+                        
+                        position @ buffer-length @ > %if
+                                false
+                                position 1+!
+                                exit
+                        %then
+
+                        position @ buffer @ + c@
+                %goto-z word-loop-initial
+                
+                buffer @ position @ + 
+                @echo @ %if
+                        dup .s
+                %then
+                exit
+        %then
+
 	~word-loop1
 		position 1+!
                 position @ buffer @ + buffer-length @ buffer @ + 
@@ -283,10 +307,14 @@
 %: on true %;
 %: off false %;
 
+%variable current-word-compiling
+
 %: interp
 	prepare
+        true started !
 	~shell-loop-inner
 		word found !
+                found @ current-word-compiling !
 		found @ %if
 			state @ not %if
 				found @ find found !
