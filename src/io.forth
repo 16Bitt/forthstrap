@@ -101,8 +101,8 @@
 		
 		interp
 		errorlevel @ %if
-                        error
-			false errorlevel ! 
+			error
+                        false errorlevel ! 
 		%then
 	%goto shell-loop
 %;

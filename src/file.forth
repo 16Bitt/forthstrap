@@ -25,10 +25,18 @@
         file-read
         
         ( Save interpreter state )
-        found @ buffer @ buffer-length @ position @ >r  >r >r >r
+        found @ state @ started @ buffer @ buffer-length @ position @ 
+        >r >r >r >r >r >r
         dup buffer !
         strlen buffer-length ! 
         position 0!
         interp
-        r> r> r> r> position ! buffer-length ! buffer ! found !
+        
+        errorlevel @ if
+                cr ." Unknown word in file: "  current-word-compiling @ .s
+                cr ." Make sure the necessary vocabularies are loaded. "
+        then
+
+        r> r> r> r> r> r>
+        position ! buffer-length ! buffer ! started ! state ! found !
 ;

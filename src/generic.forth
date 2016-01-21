@@ -191,9 +191,10 @@
                 ~word-loop-initial
                         position 1+!
                         
-                        position @ buffer-length @ > %if
+                        position @ buffer-length @ > 
+                        position @ buffer-length @ =
+                        or %if
                                 false
-                                position 1+!
                                 exit
                         %then
 
@@ -326,7 +327,8 @@
 						true found !
 					%else
 						RuntimeWordNotFound errorlevel !
-					%then
+					        exit
+                                        %then
 				%then
 			%else
 				found @ cfind found !
@@ -345,6 +347,7 @@
 							false errorlevel !
 						%else
 							CtimeWordNotFound errorlevel !
+                                                        exit
 						%then
 					%then
 				%then

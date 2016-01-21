@@ -532,4 +532,4 @@ c_var_loc:
 
 ;4 MB heap
 end_of_forth:
-times 1024 * 1024 * 4 db 0
+times 1024 * 1024 * 8 db 0

@@ -9,9 +9,24 @@
   again
 ;
 
-: dis ( len addr -- )
+: dis ( len -- )
   cr
   ` dup 0 = if drop drop exit then
+  swap 0 do
+    dup . char : emit space
+    dup @ unfind 
+    dup 0 = if drop dup @ . char = emit char ' emit dup c@ emit char ' emit
+    else 
+       .s
+    then
+    ws + cr
+  loop
+  drop 
+;
+
+: dis-addr ( len addr )
+  cr
+  dup 0 = if drop drop exit then
   swap 0 do
     dup . char : emit space
     dup @ unfind 

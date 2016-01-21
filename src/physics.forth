@@ -7,7 +7,7 @@
                 ( Honors Physics Research Project )
 
 ( These are what we expect to have already been loaded: )
-list.forth gfx.forth float.forth arg.forth logic.forth
+logger.forth list.forth gfx.forth float.forth arg.forth logic.forth
 
 ( This library provides a simple way to log numbers and strings )
 
