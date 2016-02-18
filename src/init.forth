@@ -9,6 +9,9 @@ cr
 ." Loading init settings... " cr
 " src/init0.forth " load
 
+." Loading memory safety library... " cr
+" src/wheels.forth " load
+
 ." Loading logic library... " cr
 " src/logic.forth " load
 
