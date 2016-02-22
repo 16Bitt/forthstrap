@@ -120,3 +120,12 @@ forget cases
                 drop drop
         done
 ;
+
+( The REPEAT word for clean BEGIN loops )
+: repeat 
+does>
+        metacompile
+                jnz
+        done
+        p> ,
+;

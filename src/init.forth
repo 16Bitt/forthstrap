@@ -9,6 +9,9 @@ cr
 ." Loading init settings... " cr
 " src/init0.forth " load
 
+." Loading disassembler library... " cr
+" src/dis.forth " load
+
 ." Loading memory safety library... " cr
 " src/wheels.forth " load
 
@@ -26,9 +29,6 @@ cr
 
 ." Loading randomness library... " cr
 " src/rand.forth " load
-
-." Loading disassembler library... " cr
-" src/dis.forth " load
 
 ." Loading UNIX library... " cr
 " src/unix.forth " load

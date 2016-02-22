@@ -1,5 +1,7 @@
 ( forthstrap decompiler )
 
+: dis.forth ;
+
 : unfind ( addr -- name ) 
   last @
   begin
