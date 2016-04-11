@@ -1,3 +1,4 @@
+
 ( Safe lists for forthstrap -- Austin Bittinger 2/17/16 )
 : safelist.forth ;
 

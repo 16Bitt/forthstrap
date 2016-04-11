@@ -519,13 +519,24 @@ hello_str: db "hello, world", 0
 code_start:
 	db "127 bs-val !"
 	db " "
-   incbin "src/string.forth"
+	incbin "src/string.forth"
 	db " "
-   incbin "src/file.forth"
-   db " "
-   db " word src/init.forth load "
-   db " "
-   db 0
+	incbin "src/file.forth"
+	db " "
+	incbin "src/dis.forth"
+	db " "
+	incbin "src/strlib.forth"
+	db " "
+	incbin "src/compile.forth"
+	db " "
+	incbin "src/syntax.forth"
+	db " "
+	incbin "src/safelist.forth"
+	db " "
+	incbin "src/imports.forth"
+	db " word /home/austin/src/forthstrap/src/ addpath "
+	db " word init1.forth import "
+	db 0
 
 c_var_loc:
 	times 8 dd 0

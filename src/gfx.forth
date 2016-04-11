@@ -1,4 +1,7 @@
 ( Forth GFX library )
+
+" arg.forth " import
+
 : gfx.forth ;
 
 ( This doesn't really matter depending on the platform )

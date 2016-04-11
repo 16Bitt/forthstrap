@@ -15,6 +15,9 @@ cr
 ." Loading memory safety library... " cr
 " src/wheels.forth " load
 
+." Loading strlib " cr
+" src/strlib.forth " load
+( 
 ." Loading logic library... " cr
 " src/logic.forth " load
 
@@ -47,7 +50,7 @@ cr
 
 ." Loading memory definitions... " cr
 " src/memory.forth " load
-
+ )
 ." Loading compiler library... " cr
 " src/compile.forth " load
 
@@ -57,5 +60,9 @@ cr
 ." Loading object library... " cr
 " src/object.forth " load
 
+." Loading safelists... " cr
+" src/safelist.forth " load
+
 ." Loading runtime settings... " cr
 " src/init1.forth " load
+
