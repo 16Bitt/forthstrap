@@ -19,9 +19,9 @@ linux: bootstrap unix_runtime
 	dd if=raw_img.bin of=floppy.img conv=notrunc bs=512 seek=770
 
 linux-run: linux
-	stty raw -echo isig
+	#stty raw -echo isig
 	-./x86
-	stty cooked echo
+	#stty cooked echo
 	echo
 
 linux-dbg: linux

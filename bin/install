@@ -6,5 +6,8 @@ echo "#!/bin/sh" > forthstrap-init
 echo "cp -r $(pwd)/* ." >> forthstrap-init
 chmod a+x forthstrap-init
 mv forthstrap-init /usr/bin
+cp ./x86 /usr/bin/forthstrap
+mkdir -p /usr/src/forthstrap
+cp src/* /usr/src/forthstrap/
 
 echo Done.

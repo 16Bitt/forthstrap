@@ -534,7 +534,6 @@ code_start:
 	incbin "src/safelist.forth"
 	db " "
 	incbin "src/imports.forth"
-	db " word /home/austin/src/forthstrap/src/ addpath "
 	db " word init1.forth import "
 	db 0
 
