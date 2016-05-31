@@ -1,5 +1,6 @@
 ( Forthstrap debugging vocab )
-file.forth
+" file.forth " import
+" dis.forth " import
 : dbg.forth ;
 
 variable DBG_TARGET

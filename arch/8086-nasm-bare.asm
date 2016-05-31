@@ -457,9 +457,21 @@ bnot_BEGIN:
 	push ax
 	jmp next
 
+or_start:
+	dw bnot_start
+	db "or", 0
+or_CFA:
+	dw or_BEGIN
+or_BEGIN:
+	pop ax
+	pop bx
+	or ax, bx
+	push ax
+	jmp next
+
 ;ws ( -- word-size)
 ws_start:
-	dw bnot_start
+	dw or_start
 	db "ws", 0
 ws_CFA:
 	dw ws_BEGIN

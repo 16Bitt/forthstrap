@@ -1,6 +1,7 @@
 ( Data structure library )
 ( Austin Bittinger -- December 2, 2015 )
-compile.forth
+ " compile.forth " import
+
 : object.forth ;
 
 variable objname
@@ -8,18 +9,18 @@ variable count
 
 ( Main Vocabulary )
 : mk-accessor ( offs -- )
-                
+
 ;
 
 : structure
         count 0!
         begin
-                position @ 
+                position @
                 word " named " strcmp if
                         drop
 
                         create
-                        
+
                         metacompile
                                 enter object lit
                         done
@@ -33,7 +34,7 @@ variable count
                         exit
                 then
                 position !
-                
+
                 create
                 metacompile
                         enter @ lit

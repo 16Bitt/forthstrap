@@ -3,6 +3,10 @@
 ( Conflicts with disk.forth load.forth )
 : file.forth ;
 
+variable showfileerror
+
+: fileerror showfileerror @ if ." Error in file read/write " then ;
+
 : fs? true ;
 
 : file-read ( filename -- buffer )
@@ -21,7 +25,7 @@
 ;
 
 : load ( filename -- )
-        dup file-exists? not if drop exit then
+        dup file-exists? not if drop fileerror exit then
         file-read
         
         ( Save interpreter state )
@@ -40,3 +44,6 @@
         r> r> r> r> r> r>
         position ! buffer-length ! buffer ! started ! state ! found !
 ;
+
+( This will be overloaded if import.forth is defined )
+: import load ;

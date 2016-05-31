@@ -3,7 +3,8 @@
 echo Making forthstrap installer...
 
 echo "#!/bin/sh" > forthstrap-init
-echo "cp -r $(pwd)/* ." >> forthstrap-init
+forthpath="$(pwd)"
+echo "cp -r $forthpath/src $forthpath/bin $forthpath/arch $forthpath/makefile $forthpath/forthstrap ." >> forthstrap-init
 chmod a+x forthstrap-init
 mv forthstrap-init /usr/bin
 cp ./x86 /usr/bin/forthstrap

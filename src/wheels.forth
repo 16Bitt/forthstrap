@@ -5,6 +5,8 @@
         but it makes debugging and testing infinitely easier.
 )
 
+: wheels.forth ;
+
 variable reference
 h F0000000 constant upper
 h 00080000 constant lower
@@ -30,7 +32,7 @@ old @
 ;
 
 old c@
-: c@ 
+: c@
         dup lower < if
                 previous-dbg
                 cr ." Tried to read from low memory, continuing with bad value= " dup . cr

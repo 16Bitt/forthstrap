@@ -32,16 +32,16 @@
 ( A very bad implementation of Bresenham's line algorithm )
 : drawline
         {
-                4 arguments:    x1 y1 x2 y2 
+                4 arguments:    x1 y1 x2 y2
                 5 locals:       dx dy err derr y
         }
-        
+
         ( Make sure our points are ordered )
         x1 @ x2 @ > if
                 x1 @ x2 @ x1 ! x2 !
                 y1 @ y2 @ y1 ! y2 !
         then
-        
+
         ( Account for vertical lines )
         x1 @ x2 @ = if
                 cr ." VERTICAL "
@@ -79,4 +79,14 @@
         loop
 
         { 9 finished: x1 y1 x2 y2 dx dy err derr y }
+;
+
+: solidrect ( l w x y -- )
+    { 4 arguments: l w x y }
+
+    l @ 0 do
+		w @ x @ y @ i + horizontal
+    loop
+
+    { 4 finished: l w x y }
 ;

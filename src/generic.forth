@@ -59,6 +59,8 @@
 %: within? 2over > swap 2over < and swap drop %;
 %: cells ws * %;
 %: even? 1 and not %;
+%: +! dup @ swap rot + swap ! %;
+%: -! dup @ swap rot - swap ! %;
 
 \ -----------------------
 \ HERE related vocabulary
@@ -144,9 +146,9 @@
 %variable position
 
 \ Evaluate a string AS THE INTERPRETER EXPECTS, shorthand
-%: evaluate 
+%: evaluate
         position @ buffer @ buffer-length @ found @ >r >r >r >r
-        
+
         dup strlen buffer-length ! buffer !
         position 0!
         position 1-!
@@ -159,7 +161,8 @@
 %: prepare
 	position 0!
 	~prepare-loop
-		position @ buffer @ + c@ 
+		position @ buffer @ + c@
+		dup 9  = %if 0 buffer @ position @ + c! %then
 		dup 13 = %if 0 buffer @ position @ + c! %then
 		dup 10 = %if 0 buffer @ position @ + c! %then
 		    32 = %if 0 buffer @ position @ + c! %then
@@ -190,8 +193,8 @@
                 position 1-!
                 ~word-loop-initial
                         position 1+!
-                        
-                        position @ buffer-length @ > 
+
+                        position @ buffer-length @ >
                         position @ buffer-length @ =
                         or %if
                                 false
@@ -200,8 +203,8 @@
 
                         position @ buffer @ + c@
                 %goto-z word-loop-initial
-                
-                buffer @ position @ + 
+
+                buffer @ position @ +
                 @echo @ %if
                         dup .s
                 %then
@@ -210,8 +213,8 @@
 
 	~word-loop1
 		position 1+!
-                position @ buffer @ + buffer-length @ buffer @ + 
-                > %if 
+                position @ buffer @ + buffer-length @ buffer @ +
+                > %if
 		        false exit
                 %then
 		buffer @ position @ + c@
@@ -219,16 +222,16 @@
 
 	~word-loop2
 		position 1+!
-                position @ buffer @ + buffer-length @ buffer @ + 
-                > %if 
+                position @ buffer @ + buffer-length @ buffer @ +
+                > %if
 		        false exit
                 %then
 		position @ buffer @ + c@
 	%goto-z word-loop2
 
-	position @ buffer @ + buffer-length @ buffer @ + 
-	> %if 
-		false 
+	position @ buffer @ + buffer-length @ buffer @ +
+	> %if
+		false
 	%else
 		position @ buffer-length @ = %if
 			false
@@ -244,7 +247,7 @@
 \ Check if the string at the ptr is a valid integer
 %: number?
 	position @
-	
+
 	position @ buffer @ + c@ 45 = %if
 		position 1+!
 	%then
@@ -275,23 +278,23 @@
 
 %: create here @ last @ , last ! word strmov %;
 %C: does> ; [
-	here @ clast @ , clast ! 
+	here @ clast @ , clast !
 	last @ ws + strmov
 	%lit enter ,
-%; 
+%;
 
 %: variable create %lit enter , %lit lit , here @ 0 , %lit exit , here @ 0 , swap ! %;
 
-%: value 
-        create 
-        %lit enter , 
-        %lit lit , 
-        here @ 
-        0 , 
-        %lit exit , 
+%: value
+        create
+        %lit enter ,
+        %lit lit ,
         here @
-        rot , swap 
-        swap ! 
+        0 ,
+        %lit exit ,
+        here @
+        rot , swap
+        swap !
 %;
 
 %: constant create %lit enter , %lit lit , , %lit exit , %;
@@ -322,7 +325,7 @@
 				found @ %if
 					found @ cfa exec
 				%else
-					number? %if 
+					number? %if
 						buffer @ position @ + number
 						true found !
 					%else
@@ -384,11 +387,11 @@
 
 %: InvalidDepth 4 %;
 
-%: i 
+%: i
 	depth @ 1 < %if
 		\ Error here?
 	%then
-        r> r> r> 3dup >r >r >r swap drop swap drop 
+        r> r> r> 3dup >r >r >r swap drop swap drop
 %;
 
 %C: do %lit depth , %lit 1+! , %lit >r , %lit >r , here @ >p %;
@@ -432,7 +435,7 @@
              %then
              @ dup
         %goto-nz forget-loop drop
-        
+
         clast lastword !
         clast @
         ~forget-loop1
