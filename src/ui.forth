@@ -7,9 +7,11 @@
 )
 
 ( Imports )
+" arg.forth " import
 " gfx.forth " import
 " safelist.forth " import
 " object.forth " import
+" defer.forth " import
 
 ( Data structures )
 structure
@@ -22,6 +24,7 @@ named window
 
 ( Variables )
 safelist windows
+variable current-window
 
 ( Methods )
 
@@ -34,10 +37,26 @@ safelist windows
 		( Get the callback of the current structure )
 		i windows [] paint-callback @
 		( Execute it if it isn't NULL )
-		dup if exec else drop then ;
+		dup if exec else drop then
 	loop
 ;
 
+: bounded? ( x y -- f )
+	current-window @ ht @ > if drop false exit then
+	current-window @ wt @ > if false exit then
+	true
+;
+
+old pixel
+: pixel ( x y -- )
+	2dup
+	( Bounds check )
+	bounded? not if drop drop exit then
+	( Draw using the old pixel routine )
+	current-window @ win-y @ + swap
+	current-window @ win-x @ + swap
+	old
+;
+
 ( Cleanup )
-forget1 windows
-forget1 drawall
+3 finished: windows drawall current-window
