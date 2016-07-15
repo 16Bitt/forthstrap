@@ -10,6 +10,10 @@ segment .text
 
 main:
 forth_start:
+	mov eax, [esp+4]
+	mov [argc_hold], eax
+	mov eax, [esp+8]
+	mov [argv_hold], eax
 	call unix_runtime_init
 	mov esi, PROGRAM
 	mov ebp, end_of_forth
@@ -496,9 +500,27 @@ bnot_BEGIN:
         push eax
         jmp next
 
+argv_start:
+	dd bnot_start
+	db "argv", 0
+argv_CFA:
+	dd argv_BEGIN
+argv_BEGIN:
+	push dword [argv_hold]
+	jmp next
+
+argc_start:
+	dd argv_start
+	db "argc", 0
+argc_CFA:
+	dd argc_BEGIN
+argc_BEGIN:
+	push dword [argc_hold]
+	jmp next
+
 ;ws ( -- word-size)
 ws_start:
-	dd bnot_start
+	dd argc_start
 	db "ws", 0
 ws_CFA:
 	dd ws_BEGIN
@@ -512,6 +534,8 @@ section .data
 emit_buffer: db 0, 0
 emit_zero: dd 0
 hello_str: db "hello, world", 0
+argv_hold: dd 0
+argc_hold: dd 0
 
 %include "arch/forth.asm"
 %include "arch/unix/unix.asm"

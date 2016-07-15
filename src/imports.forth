@@ -19,7 +19,7 @@ Safelist searchpath
 : indir? ( filename index -- flag ) searchpath [] swap s+ file-exists? ;
 
 ( Find the respective directory of the file )
-: finddir ( name -- index|false ) 
+: finddir ( name -- index|false )
         0 swap
         searchpath len 0 do
                 dup i indir? if
@@ -51,6 +51,7 @@ Safelist searchpath
 
 ( Add our default path )
 " /usr/src/forthstrap/ " addpath
+" ./src/ " addpath
 
 forget1 indir?
 forget1 finddir

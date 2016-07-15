@@ -35,7 +35,7 @@
         @
         swap 0 ?do
                 dup 0 = if
-                        drop 0 
+                        drop 0
                         cr ." Index out of bounds " cr
                         exit
                 then
@@ -47,7 +47,7 @@
 : [] ( index Listvar -- value )         &[] @ ;
 
 : append ( value Listvar -- )
-        dup @ 0 = if 
+        dup @ 0 = if
                 swap SafelistItem
                 swap !
                 exit
